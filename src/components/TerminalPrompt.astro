@@ -1,0 +1,51 @@
+---
+interface Props {
+  command: string;
+  path?: string;
+}
+
+const { command, path = '~' } = Astro.props;
+---
+
+<div class="terminal-line">
+  <span class="prompt human-only">[abhishek@nairabhi {path}]$</span>
+  <span class="command">{command}</span>
+</div>
+
+<style scoped>
+  .terminal-line {
+    display: flex;
+    gap: 1ch;
+    font-family: var(--font-mono);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--text-green);
+    word-break: break-word;
+  }
+
+  .prompt {
+    color: var(--text-muted);
+    flex-shrink: 0;
+    user-select: none;
+  }
+
+  .human-only {
+    display: inline;
+  }
+
+  :global(.agent-mode) .human-only {
+    display: none;
+  }
+
+  .command {
+    color: var(--text-green);
+    flex: 1;
+  }
+
+  @media (max-width: 480px) {
+    .terminal-line {
+      font-size: 0.85rem;
+      gap: 0.5ch;
+    }
+  }
+</style>

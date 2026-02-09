@@ -1,21 +1,24 @@
 {
   "name": "nairabhi-web",
+  "type": "module",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/ahishek/nairabhi-web.git"
+  "dependencies": {
+    "astro": "^5.7.0",
+    "@astrojs/react": "^4.2.1",
+    "@astrojs/rss": "^4.0.11",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
-  "bugs": {
-    "url": "https://github.com/ahishek/nairabhi-web/issues"
-  },
-  "homepage": "https://github.com/ahishek/nairabhi-web#readme"
+  "devDependencies": {
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "typescript": "^5.8.0"
+  }
 }

@@ -1,0 +1,186 @@
+---
+interface Props {
+  post: {
+    id: string;
+    data: {
+      title: string;
+      date: Date;
+      description: string;
+      tags?: string[];
+    };
+  };
+}
+
+const { post } = Astro.props;
+const { title, date, description, tags = [] } = post.data;
+const slug = post.id.replace(/\.md$/, '');
+
+const formattedDate = date.toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'short',
+  day: 'numeric',
+});
+---
+
+<article class="blog-post-card">
+  <div class="post-header">
+    <span class="tree-branch">├──</span>
+    <a href={`/blog/${slug}`} class="post-title">{title}</a>
+  </div>
+
+  <div class="post-meta">
+    <span class="post-date">{formattedDate}</span>
+    {tags.length > 0 && (
+      <div class="tags">
+        {tags.map((tag) => (
+          <span class="tag">{tag}</span>
+        ))}
+      </div>
+    )}
+  </div>
+
+  <p class="post-description">{description}</p>
+</article>
+
+<style scoped>
+  .blog-post-card {
+    padding: 1.5rem 0;
+    border-bottom: 1px solid var(--border-color);
+    transition: all 0.3s ease;
+    font-family: var(--font-mono);
+  }
+
+  .blog-post-card:last-child {
+    border-bottom: none;
+  }
+
+  .blog-post-card:hover {
+    background-color: rgba(255, 176, 0, 0.05);
+    padding: 1.5rem;
+    margin: 0 -1.5rem;
+  }
+
+  .post-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .tree-branch {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    flex-shrink: 0;
+    user-select: none;
+  }
+
+  .post-title {
+    color: var(--text-primary);
+    font-size: 1.1rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.3s ease;
+    border-bottom: 2px solid transparent;
+    padding-bottom: 2px;
+  }
+
+  .blog-post-card:hover .post-title {
+    color: var(--text-amber);
+    border-bottom-color: var(--text-amber);
+  }
+
+  .post-meta {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    font-size: 0.9rem;
+    margin-bottom: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .post-date {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+  }
+
+  .tags {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .tag {
+    color: var(--text-green);
+    font-size: 0.75rem;
+    padding: 0.2rem 0.5rem;
+    background-color: rgba(0, 255, 65, 0.1);
+    border: 1px solid var(--text-green);
+    border-radius: 2px;
+  }
+
+  .post-description {
+    color: var(--text-green);
+    line-height: 1.6;
+    font-size: 0.95rem;
+    margin: 1rem 0 0 2.5rem;
+    padding: 0;
+  }
+
+  @media (max-width: 768px) {
+    .blog-post-card {
+      padding: 1rem 0;
+    }
+
+    .blog-post-card:hover {
+      padding: 1rem;
+      margin: 0 -1rem;
+    }
+
+    .post-title {
+      font-size: 1rem;
+    }
+
+    .post-meta {
+      gap: 1rem;
+      font-size: 0.85rem;
+    }
+
+    .post-description {
+      font-size: 0.9rem;
+      margin-left: 2rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .blog-post-card {
+      padding: 0.75rem 0;
+    }
+
+    .blog-post-card:hover {
+      padding: 0.75rem;
+      margin: 0 -0.75rem;
+    }
+
+    .post-header {
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .post-title {
+      font-size: 0.95rem;
+    }
+
+    .post-meta {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.5rem;
+      font-size: 0.8rem;
+    }
+
+    .post-description {
+      font-size: 0.85rem;
+      margin-left: 0;
+      margin-top: 0.75rem;
+    }
+  }
+</style>

@@ -1,0 +1,259 @@
+/* Agent Mode - Machine-readable GitHub-style view */
+
+body.agent-mode {
+  background-color: #ffffff;
+  color: #1f2328;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+body.agent-mode::after {
+  display: none;
+}
+
+body.agent-mode main {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Agent meta visibility */
+.agent-meta {
+  display: none;
+}
+
+body.agent-mode .agent-meta {
+  display: block;
+  color: #656d76;
+  font-style: italic;
+  font-size: 0.9em;
+  margin-bottom: 2em;
+}
+
+/* Headings with markdown syntax */
+body.agent-mode h1,
+body.agent-mode h2,
+body.agent-mode h3,
+body.agent-mode h4,
+body.agent-mode h5,
+body.agent-mode h6 {
+  color: #1f2328;
+  margin-top: 1.25em;
+  margin-bottom: 0.5em;
+}
+
+body.agent-mode h1::before {
+  content: '# ';
+  color: #656d76;
+}
+
+body.agent-mode h2::before {
+  content: '## ';
+  color: #656d76;
+}
+
+body.agent-mode h3::before {
+  content: '### ';
+  color: #656d76;
+}
+
+body.agent-mode h4::before {
+  content: '#### ';
+  color: #656d76;
+}
+
+body.agent-mode h5::before {
+  content: '##### ';
+  color: #656d76;
+}
+
+body.agent-mode h6::before {
+  content: '###### ';
+  color: #656d76;
+}
+
+/* Links with URL display */
+body.agent-mode a {
+  color: #0969da;
+  border-bottom: none;
+  text-decoration: underline;
+}
+
+body.agent-mode a[href]::after {
+  content: ' (' attr(href) ')';
+  color: #656d76;
+  font-size: 0.85em;
+  margin-left: 2px;
+}
+
+body.agent-mode a:hover {
+  opacity: 1;
+  text-decoration: underline;
+}
+
+/* Code blocks */
+body.agent-mode code {
+  background-color: #f6f8fa;
+  color: #24292f;
+  padding: 2px 6px;
+  border-radius: 6px;
+}
+
+body.agent-mode pre {
+  background-color: #f6f8fa;
+  color: #24292f;
+  border: 1px solid #e1e4e8;
+  border-radius: 6px;
+  padding: 16px;
+}
+
+body.agent-mode pre code {
+  background-color: transparent;
+  color: inherit;
+  border-radius: 0;
+  padding: 0;
+}
+
+/* Remove decorative elements */
+body.agent-mode .scanlines::after {
+  display: none;
+}
+
+body.agent-mode .cursor {
+  display: none;
+}
+
+body.agent-mode .terminal-prompt {
+  color: #656d76;
+  font-weight: 400;
+}
+
+/* Blockquotes */
+body.agent-mode blockquote {
+  border-left: 3px solid #e1e4e8;
+  color: #656d76;
+  padding-left: 1em;
+  margin: 0 0 16px 0;
+}
+
+/* Horizontal rules with markdown style */
+body.agent-mode hr {
+  background-color: transparent;
+  border: none;
+  height: auto;
+  margin: 24px 0;
+  color: #656d76;
+}
+
+body.agent-mode hr::before {
+  content: '---';
+  color: #656d76;
+  display: block;
+  text-align: center;
+}
+
+/* Lists */
+body.agent-mode ul,
+body.agent-mode ol {
+  margin-left: 2em;
+  margin-bottom: 1em;
+}
+
+body.agent-mode li {
+  margin-bottom: 0.25em;
+}
+
+/* Tables */
+body.agent-mode table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 16px 0;
+}
+
+body.agent-mode th,
+body.agent-mode td {
+  padding: 6px 13px;
+  border: 1px solid #e1e4e8;
+}
+
+body.agent-mode th {
+  background-color: #f6f8fa;
+  color: #24292f;
+  font-weight: 700;
+}
+
+body.agent-mode td {
+  background-color: #ffffff;
+}
+
+/* Remove box shadows and gradients */
+body.agent-mode .bg-card {
+  background-color: transparent;
+  border-radius: 0;
+  border-bottom: 1px solid #e1e4e8;
+}
+
+/* Card elements - transform to simple borders */
+body.agent-mode [class*='card'] {
+  background-color: #ffffff;
+  border-radius: 0;
+  border: none;
+  border-bottom: 1px solid #e1e4e8;
+}
+
+/* Navigation - remove special styling */
+body.agent-mode nav a {
+  color: #0969da;
+}
+
+body.agent-mode nav a::before {
+  content: none;
+}
+
+/* Selection */
+body.agent-mode ::selection {
+  background-color: #cce5ff;
+  color: #1f2328;
+}
+
+body.agent-mode ::-moz-selection {
+  background-color: #cce5ff;
+  color: #1f2328;
+}
+
+/* Scrollbar in agent mode */
+body.agent-mode ::-webkit-scrollbar-thumb {
+  background-color: #d0d7de;
+}
+
+body.agent-mode ::-webkit-scrollbar-thumb:hover {
+  background-color: #b1bac4;
+}
+
+/* Paragraphs */
+body.agent-mode p {
+  margin-bottom: 1em;
+  line-height: 1.6;
+}
+
+/* ASCII art and decorative elements */
+body.agent-mode .ascii-art {
+  display: none;
+}
+
+body.agent-mode .decorative {
+  display: none;
+}
+
+/* Keep toggle styled */
+body.agent-mode .view-mode-toggle {
+  background-color: #f6f8fa;
+  color: #1f2328;
+  border: 1px solid #e1e4e8;
+}
+
+body.agent-mode .view-mode-toggle:hover {
+  background-color: #eaeef2;
+}
+
+/* Smooth transitions */
+body.agent-mode * {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}

@@ -1,0 +1,97 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import TerminalPrompt from '../../components/TerminalPrompt.astro';
+import BlogPostCard from '../../components/BlogPostCard.astro';
+import { getCollection } from 'astro:content';
+
+const posts = await getCollection('blog');
+const sortedPosts = posts
+  .filter(post => !post.data.draft)
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+---
+
+<BaseLayout title="Blog">
+  <div slot="header">
+    <Header />
+  </div>
+
+  <div class="blog-container">
+    <TerminalPrompt command="ls -la ~/blog/" />
+
+    <div class="total-line">
+      total {sortedPosts.length}
+    </div>
+
+    {sortedPosts.length > 0 ? (
+      <div class="posts-list">
+        {sortedPosts.map((post) => (
+          <BlogPostCard post={post} />
+        ))}
+      </div>
+    ) : (
+      <div class="empty-state">
+        <p>More posts incoming. I promise. Maybe.</p>
+      </div>
+    )}
+  </div>
+
+  <div slot="footer">
+    <Footer />
+  </div>
+</BaseLayout>
+
+<style scoped>
+  .blog-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    animation: fadeIn 0.6s ease-in;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .total-line {
+    font-family: 'Courier New', monospace;
+    color: #888;
+    font-size: 0.9rem;
+    margin: -1.5rem 0 1rem 0;
+  }
+
+  .posts-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 3rem 2rem;
+    border: 1px dashed #444;
+    border-radius: 4px;
+    background-color: rgba(0, 255, 65, 0.03);
+  }
+
+  .empty-state p {
+    color: #888;
+    font-family: 'Courier New', monospace;
+    font-size: 1.1rem;
+    margin: 0;
+  }
+
+  @media (max-width: 768px) {
+    .posts-list {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

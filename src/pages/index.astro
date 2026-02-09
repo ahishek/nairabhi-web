@@ -1,0 +1,181 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import AsciiArt from '../components/AsciiArt.astro';
+import TerminalPrompt from '../components/TerminalPrompt.astro';
+import BlogPostCard from '../components/BlogPostCard.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import { getCollection } from 'astro:content';
+import { projects } from '../data/projects';
+
+const allPosts = await getCollection('blog');
+const latestPosts = allPosts
+  .filter(post => !post.data.draft)
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
+  .slice(0, 3);
+
+const featuredProjects = projects.slice(0, 3);
+---
+
+<BaseLayout title="Home">
+  <div slot="header">
+    <Header />
+  </div>
+
+  <div class="home-container">
+    <AsciiArt />
+
+    <section class="tagline-section">
+      <p class="tagline">> Product Manager by day. Tinkerer by night.</p>
+      <p class="tagline">> Currently making credit cards work at Zeta.</p>
+      <p class="tagline">> Previously wrote code. Now I write PRDs. The bugs followed.<span class="cursor">_</span></p>
+    </section>
+
+    <section class="blog-section">
+      <TerminalPrompt command="cat latest-posts.md" />
+      <div class="posts-grid">
+        {latestPosts.map(post => (
+          <BlogPostCard post={post} />
+        ))}
+      </div>
+      <a href="/blog" class="nav-link">cd ~/blog →</a>
+    </section>
+
+    <section class="projects-section">
+      <TerminalPrompt command="ls projects/" />
+      <div class="projects-grid">
+        {featuredProjects.map(project => (
+          <ProjectCard project={project} />
+        ))}
+      </div>
+      <a href="/projects" class="nav-link">cd ~/projects →</a>
+    </section>
+
+    <section class="whoami-section">
+      <TerminalPrompt command="whoami" />
+      <div class="bio-text">
+        <p>I'm a product person who somehow still remembers how to code. Spent the early years shipping Android apps at Practo and hotel infrastructure at Treebo. Then jumped into the fintech rabbit hole at Zeta, where I've been shipping payment products and making credit cards work better than they have any right to.</p>
+        <p>Studied CS (and inexplicably Chemistry) at BITS Pilani, then got an MBA from ISB and Tuck at Dartmouth because apparently one degree wasn't enough punishment. These days I spend my time explaining why technical debt matters to non-technical people, which is basically a superpower.</p>
+        <p>When I'm not thinking about card payments and UPI flows, I'm probably refactoring code I no longer own or questioning my life choices.</p>
+      </div>
+    </section>
+  </div>
+
+  <div slot="footer">
+    <Footer />
+  </div>
+</BaseLayout>
+
+<style scoped>
+  .home-container {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+    animation: fadeIn 0.6s ease-in;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .tagline-section {
+    margin: 2rem 0;
+    padding: 1.5rem;
+    border-left: 2px solid #00ff41;
+    background-color: rgba(0, 255, 65, 0.05);
+  }
+
+  .tagline {
+    font-family: 'Courier New', monospace;
+    font-size: 1.1rem;
+    color: #00ff41;
+    margin: 0.5rem 0;
+    letter-spacing: 0.05em;
+  }
+
+  .cursor {
+    display: inline-block;
+    animation: blink 1s infinite;
+    margin-left: 0.2em;
+  }
+
+  @keyframes blink {
+    0%, 50% {
+      opacity: 1;
+    }
+    51%, 100% {
+      opacity: 0;
+    }
+  }
+
+  .blog-section,
+  .projects-section,
+  .whoami-section {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .posts-grid,
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .nav-link {
+    display: inline-block;
+    color: #00ff41;
+    text-decoration: none;
+    font-family: 'Courier New', monospace;
+    margin-top: 1rem;
+    transition: all 0.3s ease;
+    padding: 0.5rem 1rem;
+    border: 1px solid transparent;
+    border-radius: 4px;
+  }
+
+  .nav-link:hover {
+    background-color: rgba(0, 255, 65, 0.1);
+    border-color: #00ff41;
+    transform: translateX(4px);
+  }
+
+  .bio-text {
+    color: #e0e0e0;
+    line-height: 1.8;
+    font-size: 1rem;
+  }
+
+  .bio-text p {
+    margin-bottom: 1rem;
+  }
+
+  .bio-text p:last-child {
+    margin-bottom: 0;
+  }
+
+  @media (max-width: 768px) {
+    .home-container {
+      gap: 2rem;
+    }
+
+    .tagline {
+      font-size: 1rem;
+    }
+
+    .posts-grid,
+    .projects-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

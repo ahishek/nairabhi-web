@@ -1,0 +1,149 @@
+---
+---
+
+<div class="ascii-art-container">
+  <div class="human-only">
+    <pre class="ascii-art"> █████╗ ██████╗ ██╗  ██╗██╗███████╗██╗  ██╗███████╗██╗  ██╗
+██╔══██╗██╔══██╗██║  ██║██║██╔════╝██║  ██║██╔════╝██║ ██╔╝
+███████║██████╔╝███████║██║███████╗███████║█████╗  █████╔╝
+██╔══██║██╔══██╗██╔══██║██║╚════██║██╔══██║██╔══╝  ██╔═██╗
+██║  ██║██████╔╝██║  ██║██║███████║██║  ██║███████╗██║  ██╗
+╚═╝  ╚═╝╚═════╝ ╚═╝  ╚═╝╚═╝╚══════╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝</pre>
+    <div class="tagline">
+      <span class="tagline-text">$ Full-stack developer & creative thinker</span><span class="cursor">_</span>
+    </div>
+  </div>
+
+  <div class="agent-only">
+    <div class="agent-title"># Abhishek Nair</div>
+    <div class="agent-subtitle">Full-stack developer & creative thinker</div>
+  </div>
+</div>
+
+<style scoped>
+  .ascii-art-container {
+    width: 100%;
+    padding: 2rem 1rem;
+  }
+
+  .human-only {
+    display: block;
+  }
+
+  .agent-only {
+    display: none;
+  }
+
+  :global(.agent-mode) .human-only {
+    display: none;
+  }
+
+  :global(.agent-mode) .agent-only {
+    display: block;
+  }
+
+  .ascii-art {
+    color: var(--text-green);
+    font-family: var(--font-mono);
+    font-size: clamp(0.6rem, 1.2vw, 1rem);
+    line-height: 1.2;
+    margin: 0;
+    padding: 1rem;
+    text-align: center;
+    white-space: pre;
+    overflow-x: auto;
+    text-shadow: 0 0 10px rgba(0, 255, 65, 0.3), 0 0 20px rgba(0, 255, 65, 0.1);
+    letter-spacing: 0.05em;
+  }
+
+  .tagline {
+    text-align: center;
+    margin-top: 1.5rem;
+    font-family: var(--font-mono);
+    font-size: 1rem;
+    color: var(--text-green);
+  }
+
+  .tagline-text {
+    display: inline;
+  }
+
+  .cursor {
+    display: inline-block;
+    margin-left: 0.25rem;
+    animation: blink 1.2s infinite;
+  }
+
+  @keyframes blink {
+    0%,
+    49% {
+      opacity: 1;
+    }
+    50%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  .agent-title {
+    text-align: center;
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--text-amber);
+    font-family: var(--font-mono);
+    text-shadow: 0 0 10px rgba(255, 176, 0, 0.2);
+  }
+
+  .agent-subtitle {
+    text-align: center;
+    font-size: 1.1rem;
+    color: var(--text-green);
+    font-family: var(--font-mono);
+    margin-top: 0.5rem;
+  }
+
+  @media (max-width: 768px) {
+    .ascii-art-container {
+      padding: 1.5rem 0.5rem;
+    }
+
+    .ascii-art {
+      font-size: clamp(0.5rem, 0.8vw, 0.8rem);
+      padding: 0.5rem;
+    }
+
+    .tagline {
+      font-size: 0.9rem;
+      margin-top: 1rem;
+    }
+
+    .agent-title {
+      font-size: 1.5rem;
+    }
+
+    .agent-subtitle {
+      font-size: 0.95rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .ascii-art {
+      font-size: clamp(0.4rem, 0.6vw, 0.65rem);
+      padding: 0.25rem;
+      line-height: 1;
+    }
+
+    .tagline {
+      font-size: 0.75rem;
+      margin-top: 0.75rem;
+    }
+
+    .agent-title {
+      font-size: 1.2rem;
+    }
+
+    .agent-subtitle {
+      font-size: 0.85rem;
+    }
+  }
+</style>

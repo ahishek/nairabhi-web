@@ -1,0 +1,151 @@
+---
+import ViewToggle from './ViewToggle.tsx';
+
+const currentYear = new Date().getFullYear();
+
+const socialLinks = [
+  { label: '[gh]', url: 'https://github.com/ahishek', title: 'GitHub' },
+  { label: '[x]', url: 'https://x.com/Abhi1Nair', title: 'Twitter/X' },
+  { label: '[in]', url: 'https://linkedin.com/in/abhishek-nair-83627730', title: 'LinkedIn' },
+  { label: '[mail]', url: 'mailto:contactabhisheknair@gmail.com', title: 'Email' },
+];
+---
+
+<footer class="site-footer">
+  <div class="footer-container">
+    <div class="social-section">
+      <div class="social-links">
+        {socialLinks.map((link) => (
+          <a
+            href={link.url}
+            title={link.title}
+            class="social-link"
+            target={link.url.startsWith('mailto:') ? undefined : '_blank'}
+            rel={link.url.startsWith('mailto:') ? undefined : 'noopener noreferrer'}
+          >
+            {link.label}
+          </a>
+        ))}
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="toggle-section">
+      <ViewToggle client:load />
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="footer-text">
+      <p class="copyright">© {currentYear} Abhishek Nair. No cookies, no trackers, just vibes.</p>
+    </div>
+  </div>
+</footer>
+
+<style scoped>
+  .site-footer {
+    background-color: var(--bg-primary);
+    border-top: 2px solid var(--border-color);
+    padding: 2rem 1rem;
+    margin-top: 4rem;
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+  }
+
+  .footer-container {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    align-items: center;
+  }
+
+  .social-section {
+    width: 100%;
+  }
+
+  .social-links {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .social-link {
+    color: var(--text-amber);
+    text-decoration: none;
+    transition: color 0.3s ease, text-shadow 0.3s ease;
+    padding: 0.25rem 0.5rem;
+    border: 1px solid transparent;
+  }
+
+  .social-link:hover {
+    color: var(--text-green);
+    border-color: var(--text-green);
+    text-shadow: 0 0 8px rgba(0, 255, 65, 0.5);
+  }
+
+  .divider {
+    width: 80%;
+    max-width: 400px;
+    height: 1px;
+    background: linear-gradient(
+      to right,
+      transparent,
+      var(--border-color),
+      transparent
+    );
+  }
+
+  .toggle-section {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  .footer-text {
+    text-align: center;
+  }
+
+  .copyright {
+    color: var(--text-muted);
+    margin: 0;
+    line-height: 1.6;
+  }
+
+  @media (max-width: 768px) {
+    .site-footer {
+      padding: 1.5rem 1rem;
+      margin-top: 3rem;
+    }
+
+    .footer-container {
+      gap: 1rem;
+    }
+
+    .social-links {
+      gap: 1.5rem;
+    }
+
+    .copyright {
+      font-size: 0.8rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .social-links {
+      gap: 1rem;
+    }
+
+    .social-link {
+      font-size: 0.85rem;
+      padding: 0.2rem 0.3rem;
+    }
+
+    .divider {
+      width: 100%;
+    }
+  }
+</style>

@@ -1,0 +1,118 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import TerminalPrompt from '../components/TerminalPrompt.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import { projects } from '../data/projects';
+
+const sortedProjects = projects.sort((a, b) => {
+  const statusOrder = { active: 0, wip: 1, archived: 2 };
+  return statusOrder[a.status] - statusOrder[b.status];
+});
+---
+
+<BaseLayout title="Projects">
+  <div slot="header">
+    <Header />
+  </div>
+
+  <div class="projects-container">
+    <TerminalPrompt command="ls -la ~/projects/" />
+
+    <div class="total-line">
+      total {sortedProjects.length}
+    </div>
+
+    <div class="projects-grid">
+      {sortedProjects.map((project) => (
+        <ProjectCard project={project} />
+      ))}
+    </div>
+
+    <section class="contact-section">
+      <p class="contact-text">
+        Got a project idea? Let's build something →
+        <a href="mailto:contactabhisheknair@gmail.com" class="email-link">contactabhisheknair@gmail.com</a>
+      </p>
+    </section>
+  </div>
+
+  <div slot="footer">
+    <Footer />
+  </div>
+</BaseLayout>
+
+<style scoped>
+  .projects-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    animation: fadeIn 0.6s ease-in;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .total-line {
+    font-family: 'Courier New', monospace;
+    color: #888;
+    font-size: 0.9rem;
+    margin: -1.5rem 0 1rem 0;
+  }
+
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .contact-section {
+    margin-top: 3rem;
+    padding: 2rem;
+    border-top: 1px dashed #444;
+    border-bottom: 1px dashed #444;
+    background-color: rgba(0, 255, 65, 0.03);
+  }
+
+  .contact-text {
+    color: #e0e0e0;
+    font-family: 'Courier New', monospace;
+    font-size: 1.1rem;
+    margin: 0;
+    line-height: 1.6;
+  }
+
+  .email-link {
+    color: #00ff41;
+    text-decoration: none;
+    border-bottom: 1px solid #00ff41;
+    transition: all 0.3s ease;
+    margin-left: 0.25rem;
+  }
+
+  .email-link:hover {
+    background-color: rgba(0, 255, 65, 0.1);
+    padding: 0.2rem 0.4rem;
+    border-radius: 2px;
+  }
+
+  @media (max-width: 768px) {
+    .projects-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .contact-text {
+      font-size: 1rem;
+    }
+  }
+</style>

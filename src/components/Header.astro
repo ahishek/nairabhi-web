@@ -1,0 +1,151 @@
+---
+const currentPath = Astro.url.pathname;
+
+const isActive = (path: string) => {
+  if (path === '/' && currentPath === '/') return true;
+  if (path !== '/' && currentPath.startsWith(path)) return true;
+  return false;
+};
+
+const navLinks = [
+  { name: 'home', path: '/' },
+  { name: 'projects', path: '/projects' },
+  { name: 'blog', path: '/blog' },
+  { name: 'about', path: '/about' },
+];
+---
+
+<header class="site-header">
+  <div class="header-container">
+    <div class="prompt-section">
+      <span class="prompt-mobile">$</span>
+      <span class="prompt-desktop">[visitor@nairabhi.com ~]$</span>
+    </div>
+
+    <nav class="nav-section">
+      <ul class="nav-list">
+        {navLinks.map((link) => (
+          <li>
+            <a
+              href={link.path}
+              class={`nav-link ${isActive(link.path) ? 'active' : ''}`}
+            >
+              cd ~/{link.name === 'home' ? '' : link.name}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<style scoped>
+  .site-header {
+    background-color: var(--bg-primary);
+    border-bottom: 2px solid var(--border-color);
+    padding: 1.5rem 1rem;
+    font-family: var(--font-mono);
+    font-size: 0.95rem;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .header-container {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .prompt-section {
+    color: var(--text-muted);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .prompt-mobile {
+    display: none;
+  }
+
+  .prompt-desktop {
+    display: inline;
+  }
+
+  .nav-section {
+    flex: 1;
+    min-width: 200px;
+  }
+
+  .nav-list {
+    list-style: none;
+    display: flex;
+    gap: 2rem;
+    margin: 0;
+    padding: 0;
+    flex-wrap: wrap;
+  }
+
+  .nav-link {
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color 0.3s ease, text-shadow 0.3s ease;
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    border: 1px solid transparent;
+  }
+
+  .nav-link:hover {
+    color: var(--text-green);
+    border-color: var(--text-green);
+    text-shadow: 0 0 8px rgba(0, 255, 65, 0.5);
+  }
+
+  .nav-link.active {
+    color: var(--text-amber);
+    border-color: var(--text-amber);
+    text-shadow: 0 0 10px rgba(255, 176, 0, 0.5);
+  }
+
+  @media (max-width: 768px) {
+    .site-header {
+      padding: 1rem;
+    }
+
+    .header-container {
+      gap: 1rem;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .prompt-mobile {
+      display: inline;
+    }
+
+    .prompt-desktop {
+      display: none;
+    }
+
+    .nav-list {
+      gap: 1rem;
+    }
+
+    .nav-link {
+      font-size: 0.85rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .nav-list {
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .nav-link {
+      padding: 0.5rem;
+    }
+  }
+</style>
