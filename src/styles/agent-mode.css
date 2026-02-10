@@ -256,17 +256,6 @@ body.agent-mode .decorative {
   display: none;
 }
 
-/* Keep toggle styled */
-body.agent-mode .view-mode-toggle {
-  background-color: var(--agent-surface);
-  color: var(--agent-text);
-  border: 1px solid var(--agent-border);
-}
-
-body.agent-mode .view-mode-toggle:hover {
-  background-color: var(--agent-surface-muted);
-}
-
 body.agent-mode header.site-header,
 body.agent-mode footer.site-footer {
   background-color: var(--agent-bg);
@@ -285,7 +274,6 @@ body.agent-mode,
 body.agent-mode main,
 body.agent-mode header.site-header,
 body.agent-mode footer.site-footer,
-body.agent-mode .view-mode-toggle,
 body.agent-mode .bg-card,
 body.agent-mode [class*='card'],
 body.agent-mode pre,
