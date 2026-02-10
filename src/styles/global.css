@@ -47,6 +47,19 @@ main {
   padding: 40px 20px;
 }
 
+
+[data-view-fragment='machine'] {
+  display: none;
+}
+
+body[data-view-mode='agent'] [data-view-fragment='human'] {
+  display: none;
+}
+
+body[data-view-mode='agent'] [data-view-fragment='machine'] {
+  display: block;
+}
+
 /* Headings */
 h1,
 h2,

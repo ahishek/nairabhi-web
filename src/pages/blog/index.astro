@@ -17,7 +17,7 @@ const sortedPosts = posts
     <Header />
   </div>
 
-  <div class="blog-container">
+  <div class="blog-container" data-view-fragment="human">
     <TerminalPrompt command="ls -la ~/blog/" />
 
     <div class="total-line">
@@ -37,61 +37,37 @@ const sortedPosts = posts
     )}
   </div>
 
+  <article class="machine-content" data-view-fragment="machine">
+    <h1>Blog</h1>
+    <p>Total posts: {sortedPosts.length}</p>
+    {sortedPosts.length > 0 ? (
+      <ul>
+        {sortedPosts.map((post) => (
+          <li>
+            <a href={`/blog/${post.id.replace(/\.md$/, '')}`}>{post.data.title}</a>
+          </li>
+        ))}
+      </ul>
+    ) : (
+      <p>No published posts yet.</p>
+    )}
+  </article>
+
   <div slot="footer">
     <Footer />
   </div>
 </BaseLayout>
 
 <style scoped>
-  .blog-container {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-    animation: fadeIn 0.6s ease-in;
-  }
-
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(10px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  .total-line {
-    font-family: 'Courier New', monospace;
-    color: #888;
-    font-size: 0.9rem;
-    margin: -1.5rem 0 1rem 0;
-  }
-
-  .posts-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-    gap: 1.5rem;
-  }
-
-  .empty-state {
-    text-align: center;
-    padding: 3rem 2rem;
-    border: 1px dashed #444;
-    border-radius: 4px;
-    background-color: rgba(0, 255, 65, 0.03);
-  }
-
-  .empty-state p {
-    color: #888;
-    font-family: 'Courier New', monospace;
-    font-size: 1.1rem;
-    margin: 0;
-  }
-
+  .blog-container { display: flex; flex-direction: column; gap: 2rem; animation: fadeIn 0.6s ease-in; }
+  .machine-content { display: flex; flex-direction: column; gap: 1rem; }
+  .machine-content ul { margin-left: 1.5rem; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(10px);} to { opacity: 1; transform: translateY(0);} }
+  .total-line { font-family: 'Courier New', monospace; color: #888; font-size: 0.9rem; margin: -1.5rem 0 1rem 0; }
+  .posts-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 1.5rem; }
+  .empty-state { text-align: center; padding: 3rem 2rem; border: 1px dashed #444; border-radius: 4px; background-color: rgba(0, 255, 65, 0.03); }
+  .empty-state p { color: #888; font-family: 'Courier New', monospace; font-size: 1.1rem; margin: 0; }
   @media (max-width: 768px) {
-    .posts-list {
-      grid-template-columns: 1fr;
-    }
+    .posts-list { grid-template-columns: 1fr; }
   }
 </style>

@@ -17,7 +17,7 @@ const sortedProjects = projects.sort((a, b) => {
     <Header />
   </div>
 
-  <div class="projects-container">
+  <div class="projects-container" data-view-fragment="human">
     <TerminalPrompt command="ls -la ~/projects/" />
 
     <div class="total-line">
@@ -38,81 +38,37 @@ const sortedProjects = projects.sort((a, b) => {
     </section>
   </div>
 
+  <article class="machine-content" data-view-fragment="machine">
+    <h1>Projects</h1>
+    <p>Total projects: {sortedProjects.length}</p>
+    <ul>
+      {sortedProjects.map((project) => (
+        <li>
+          <strong>{project.name}</strong> ({project.status}): {project.description}
+        </li>
+      ))}
+    </ul>
+    <p>Contact: <a href="mailto:contactabhisheknair@gmail.com">contactabhisheknair@gmail.com</a></p>
+  </article>
+
   <div slot="footer">
     <Footer />
   </div>
 </BaseLayout>
 
 <style scoped>
-  .projects-container {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-    animation: fadeIn 0.6s ease-in;
-  }
-
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(10px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  .total-line {
-    font-family: 'Courier New', monospace;
-    color: #888;
-    font-size: 0.9rem;
-    margin: -1.5rem 0 1rem 0;
-  }
-
-  .projects-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 1.5rem;
-    margin-bottom: 2rem;
-  }
-
-  .contact-section {
-    margin-top: 3rem;
-    padding: 2rem;
-    border-top: 1px dashed #444;
-    border-bottom: 1px dashed #444;
-    background-color: rgba(0, 255, 65, 0.03);
-  }
-
-  .contact-text {
-    color: #e0e0e0;
-    font-family: 'Courier New', monospace;
-    font-size: 1.1rem;
-    margin: 0;
-    line-height: 1.6;
-  }
-
-  .email-link {
-    color: #00ff41;
-    text-decoration: none;
-    border-bottom: 1px solid #00ff41;
-    transition: all 0.3s ease;
-    margin-left: 0.25rem;
-  }
-
-  .email-link:hover {
-    background-color: rgba(0, 255, 65, 0.1);
-    padding: 0.2rem 0.4rem;
-    border-radius: 2px;
-  }
-
+  .projects-container { display: flex; flex-direction: column; gap: 2rem; animation: fadeIn 0.6s ease-in; }
+  .machine-content { display: flex; flex-direction: column; gap: 1rem; }
+  .machine-content ul { margin-left: 1.5rem; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(10px);} to { opacity: 1; transform: translateY(0);} }
+  .total-line { font-family: 'Courier New', monospace; color: #888; font-size: 0.9rem; margin: -1.5rem 0 1rem 0; }
+  .projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.5rem; margin-bottom: 2rem; }
+  .contact-section { margin-top: 3rem; padding: 2rem; border-top: 1px dashed #444; border-bottom: 1px dashed #444; background-color: rgba(0, 255, 65, 0.03); }
+  .contact-text { color: #e0e0e0; font-family: 'Courier New', monospace; font-size: 1.1rem; margin: 0; line-height: 1.6; }
+  .email-link { color: #00ff41; text-decoration: none; border-bottom: 1px solid #00ff41; transition: all 0.3s ease; margin-left: 0.25rem; }
+  .email-link:hover { background-color: rgba(0, 255, 65, 0.1); padding: 0.2rem 0.4rem; border-radius: 2px; }
   @media (max-width: 768px) {
-    .projects-grid {
-      grid-template-columns: 1fr;
-    }
-
-    .contact-text {
-      font-size: 1rem;
-    }
+    .projects-grid { grid-template-columns: 1fr; }
+    .contact-text { font-size: 1rem; }
   }
 </style>
