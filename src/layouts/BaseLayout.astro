@@ -25,7 +25,57 @@ const { title, description = "Abhishek Nair — Product Manager, Engineer, Build
     />
     <title>{title} | nairabhi.com</title>
   </head>
-  <body class="scanlines">
+  <body class="scanlines" data-view="human">
+    <script is:inline>
+      (() => {
+        const STORAGE_KEY = 'site-view-mode';
+        const MODE_PARAM_KEY = 'view';
+        const MACHINE_CLASS = 'machine-mode';
+        const EVENT_NAME = 'view-mode-change';
+
+        const isValidMode = (value) => value === 'human' || value === 'machine';
+
+        const getInitialMode = () => {
+          const params = new URLSearchParams(window.location.search);
+          const modeFromUrl = params.get(MODE_PARAM_KEY);
+          if (isValidMode(modeFromUrl)) return modeFromUrl;
+
+          const savedMode = localStorage.getItem(STORAGE_KEY);
+          if (isValidMode(savedMode)) return savedMode;
+
+          return 'human';
+        };
+
+        const applyModeToDom = (mode) => {
+          document.body.dataset.view = mode;
+          document.body.classList.toggle(MACHINE_CLASS, mode === 'machine');
+        };
+
+        const listeners = new Set();
+        let currentMode = getInitialMode();
+
+        const setMode = (nextMode) => {
+          if (!isValidMode(nextMode) || nextMode === currentMode) return;
+          currentMode = nextMode;
+          localStorage.setItem(STORAGE_KEY, nextMode);
+          applyModeToDom(nextMode);
+          listeners.forEach((listener) => listener(nextMode));
+          document.dispatchEvent(new CustomEvent(EVENT_NAME, { detail: { mode: nextMode } }));
+        };
+
+        applyModeToDom(currentMode);
+
+        window.__viewModeStore = {
+          getMode: () => currentMode,
+          setMode,
+          subscribe: (listener) => {
+            listeners.add(listener);
+            return () => listeners.delete(listener);
+          },
+        };
+      })();
+    </script>
+
     <div class="agent-meta" aria-hidden="true">
       &lt;!-- You found the machine-readable version. Respect. --&gt;
     </div>
@@ -37,25 +87,5 @@ const { title, description = "Abhishek Nair — Product Manager, Engineer, Build
     </main>
 
     <slot name="footer" />
-
-    <script>
-      // Restore view mode from localStorage
-      const savedMode = localStorage.getItem('view-mode');
-      if (savedMode === 'agent') {
-        document.body.classList.add('agent-mode');
-      }
-
-      // Listen for toggle events
-      document.addEventListener('view-mode-change', (e: Event) => {
-        const customEvent = e as CustomEvent;
-        const mode = customEvent.detail.mode;
-        if (mode === 'agent') {
-          document.body.classList.add('agent-mode');
-        } else {
-          document.body.classList.remove('agent-mode');
-        }
-        localStorage.setItem('view-mode', mode);
-      });
-    </script>
   </body>
 </html>

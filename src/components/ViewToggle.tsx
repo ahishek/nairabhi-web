@@ -1,30 +1,52 @@
 import { useState, useEffect } from 'react';
 
-type ViewMode = 'human' | 'agent';
+type ViewMode = 'human' | 'machine';
+
+type ViewModeStore = {
+  getMode: () => ViewMode;
+  setMode: (mode: ViewMode) => void;
+  subscribe: (listener: (mode: ViewMode) => void) => () => void;
+};
+
+declare global {
+  interface Window {
+    __viewModeStore?: ViewModeStore;
+  }
+}
 
 export default function ViewToggle() {
   const [mode, setMode] = useState<ViewMode>('human');
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
-    const saved = localStorage.getItem('view-mode') as ViewMode | null;
-    if (saved) {
-      setMode(saved);
-      dispatchModeChange(saved);
+    const store = window.__viewModeStore;
+    if (!store) {
+      setMounted(true);
+      return;
     }
+
+    setMode(store.getMode());
+    const unsubscribe = store.subscribe((nextMode) => setMode(nextMode));
+    setMounted(true);
+
+    return unsubscribe;
   }, []);
 
-  const dispatchModeChange = (newMode: ViewMode) => {
-    document.dispatchEvent(
-      new CustomEvent('view-mode-change', { detail: { mode: newMode } })
-    );
+  const toggle = (newMode: ViewMode) => {
+    if (newMode === mode) return;
+    window.__viewModeStore?.setMode(newMode);
   };
 
-  const toggle = (newMode: ViewMode) => {
-    setMode(newMode);
-    localStorage.setItem('view-mode', newMode);
-    dispatchModeChange(newMode);
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    if (event.key === 'ArrowLeft') {
+      event.preventDefault();
+      toggle('human');
+    }
+
+    if (event.key === 'ArrowRight') {
+      event.preventDefault();
+      toggle('machine');
+    }
   };
 
   const pillStyle: React.CSSProperties = {
@@ -59,22 +81,24 @@ export default function ViewToggle() {
   }
 
   return (
-    <div style={pillStyle}>
+    <div style={pillStyle} onKeyDown={handleKeyDown}>
       <button
         onClick={() => toggle('human')}
         style={buttonStyle(mode === 'human')}
         aria-label="Switch to Human view"
         title="Human view"
+        aria-pressed={mode === 'human'}
       >
         [ HUMAN ]
       </button>
       <button
-        onClick={() => toggle('agent')}
-        style={buttonStyle(mode === 'agent')}
-        aria-label="Switch to Agent view"
-        title="Agent view"
+        onClick={() => toggle('machine')}
+        style={buttonStyle(mode === 'machine')}
+        aria-label="Switch to Machine view"
+        title="Machine view"
+        aria-pressed={mode === 'machine'}
       >
-        [ AGENT ]
+        [ MACHINE ]
       </button>
     </div>
   );

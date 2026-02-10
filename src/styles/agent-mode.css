@@ -1,6 +1,6 @@
 /* Agent Mode - Machine-readable GitHub-style view */
 
-body.agent-mode {
+body.machine-mode {
   --agent-bg: #0d1117;
   --agent-surface: #161b22;
   --agent-surface-muted: #1f2630;
@@ -19,11 +19,11 @@ body.agent-mode {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-body.agent-mode::after {
+body.machine-mode::after {
   display: none;
 }
 
-body.agent-mode main {
+body.machine-mode main {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
@@ -32,7 +32,7 @@ body.agent-mode main {
   display: none;
 }
 
-body.agent-mode .agent-meta {
+body.machine-mode .agent-meta {
   display: block;
   color: var(--agent-text-muted);
   font-style: italic;
@@ -41,76 +41,76 @@ body.agent-mode .agent-meta {
 }
 
 /* Headings with markdown syntax */
-body.agent-mode h1,
-body.agent-mode h2,
-body.agent-mode h3,
-body.agent-mode h4,
-body.agent-mode h5,
-body.agent-mode h6 {
+body.machine-mode h1,
+body.machine-mode h2,
+body.machine-mode h3,
+body.machine-mode h4,
+body.machine-mode h5,
+body.machine-mode h6 {
   color: var(--agent-text);
   margin-top: 1.25em;
   margin-bottom: 0.5em;
 }
 
-body.agent-mode h1::before {
+body.machine-mode h1::before {
   content: '# ';
   color: var(--agent-text-muted);
 }
 
-body.agent-mode h2::before {
+body.machine-mode h2::before {
   content: '## ';
   color: var(--agent-text-muted);
 }
 
-body.agent-mode h3::before {
+body.machine-mode h3::before {
   content: '### ';
   color: var(--agent-text-muted);
 }
 
-body.agent-mode h4::before {
+body.machine-mode h4::before {
   content: '#### ';
   color: var(--agent-text-muted);
 }
 
-body.agent-mode h5::before {
+body.machine-mode h5::before {
   content: '##### ';
   color: var(--agent-text-muted);
 }
 
-body.agent-mode h6::before {
+body.machine-mode h6::before {
   content: '###### ';
   color: var(--agent-text-muted);
 }
 
 /* Links with URL display */
-body.agent-mode a {
+body.machine-mode a {
   color: var(--agent-link);
   border-bottom: none;
   text-decoration: underline;
 }
 
-body.agent-mode a[href]::after {
+body.machine-mode a[href]::after {
   content: ' (' attr(href) ')';
   color: var(--agent-text-muted);
   font-size: 0.85em;
   margin-left: 2px;
 }
 
-body.agent-mode a:hover {
+body.machine-mode a:hover {
   color: var(--agent-link-hover);
   opacity: 1;
   text-decoration: underline;
 }
 
 /* Code blocks */
-body.agent-mode code {
+body.machine-mode code {
   background-color: var(--agent-surface-muted);
   color: var(--agent-text);
   padding: 2px 6px;
   border-radius: 6px;
 }
 
-body.agent-mode pre {
+body.machine-mode pre {
   background-color: var(--agent-surface);
   color: var(--agent-text);
   border: 1px solid var(--agent-border);
@@ -118,7 +118,7 @@ body.agent-mode pre {
   padding: 16px;
 }
 
-body.agent-mode pre code {
+body.machine-mode pre code {
   background-color: transparent;
   color: inherit;
   border-radius: 0;
@@ -126,21 +126,21 @@ body.agent-mode pre code {
 }
 
 /* Remove decorative elements */
-body.agent-mode .scanlines::after {
+body.machine-mode .scanlines::after {
   display: none;
 }
 
-body.agent-mode .cursor {
+body.machine-mode .cursor {
   display: none;
 }
 
-body.agent-mode .terminal-prompt {
+body.machine-mode .terminal-prompt {
   color: var(--agent-text-muted);
   font-weight: 400;
 }
 
 /* Blockquotes */
-body.agent-mode blockquote {
+body.machine-mode blockquote {
   border-left: 3px solid var(--agent-border);
   color: var(--agent-text-muted);
   padding-left: 1em;
@@ -148,7 +148,7 @@ body.agent-mode blockquote {
 }
 
 /* Horizontal rules with markdown style */
-body.agent-mode hr {
+body.machine-mode hr {
   background-color: transparent;
   border: none;
   height: auto;
@@ -156,7 +156,7 @@ body.agent-mode hr {
   color: var(--agent-text-muted);
 }
 
-body.agent-mode hr::before {
+body.machine-mode hr::before {
   content: '---';
   color: var(--agent-text-muted);
   display: block;
@@ -164,48 +164,48 @@ body.agent-mode hr::before {
 }
 
 /* Lists */
-body.agent-mode ul,
-body.agent-mode ol {
+body.machine-mode ul,
+body.machine-mode ol {
   margin-left: 2em;
   margin-bottom: 1em;
 }
 
-body.agent-mode li {
+body.machine-mode li {
   margin-bottom: 0.25em;
 }
 
 /* Tables */
-body.agent-mode table {
+body.machine-mode table {
   border-collapse: collapse;
   width: 100%;
   margin: 16px 0;
 }
 
-body.agent-mode th,
-body.agent-mode td {
+body.machine-mode th,
+body.machine-mode td {
   padding: 6px 13px;
   border: 1px solid var(--agent-border);
 }
 
-body.agent-mode th {
+body.machine-mode th {
   background-color: var(--agent-surface);
   color: var(--agent-text);
   font-weight: 700;
 }
 
-body.agent-mode td {
+body.machine-mode td {
   background-color: var(--agent-bg);
 }
 
 /* Remove box shadows and gradients */
-body.agent-mode .bg-card {
+body.machine-mode .bg-card {
   background-color: var(--agent-bg);
   border-radius: 0;
   border-bottom: 1px solid var(--agent-border);
 }
 
 /* Card elements - transform to simple borders */
-body.agent-mode [class*='card'] {
+body.machine-mode [class*='card'] {
   background-color: var(--agent-bg);
   border-radius: 0;
   border: none;
@@ -213,90 +213,90 @@ body.agent-mode [class*='card'] {
 }
 
 /* Navigation - remove special styling */
-body.agent-mode nav a {
+body.machine-mode nav a {
   color: var(--agent-link);
 }
 
-body.agent-mode nav a::before {
+body.machine-mode nav a::before {
   content: none;
 }
 
 /* Selection */
-body.agent-mode ::selection {
+body.machine-mode ::selection {
   background-color: var(--agent-selection-bg);
   color: var(--agent-selection-text);
 }
 
-body.agent-mode ::-moz-selection {
+body.machine-mode ::-moz-selection {
   background-color: var(--agent-selection-bg);
   color: var(--agent-selection-text);
 }
 
 /* Scrollbar in agent mode */
-body.agent-mode ::-webkit-scrollbar-thumb {
+body.machine-mode ::-webkit-scrollbar-thumb {
   background-color: var(--agent-scrollbar);
 }
 
-body.agent-mode ::-webkit-scrollbar-thumb:hover {
+body.machine-mode ::-webkit-scrollbar-thumb:hover {
   background-color: var(--agent-scrollbar-hover);
 }
 
 /* Paragraphs */
-body.agent-mode p {
+body.machine-mode p {
   margin-bottom: 1em;
   line-height: 1.6;
 }
 
 /* ASCII art and decorative elements */
-body.agent-mode .ascii-art {
+body.machine-mode .ascii-art {
   display: none;
 }
 
-body.agent-mode .decorative {
+body.machine-mode .decorative {
   display: none;
 }
 
 /* Keep toggle styled */
-body.agent-mode .view-mode-toggle {
+body.machine-mode .view-mode-toggle {
   background-color: var(--agent-surface);
   color: var(--agent-text);
   border: 1px solid var(--agent-border);
 }
 
-body.agent-mode .view-mode-toggle:hover {
+body.machine-mode .view-mode-toggle:hover {
   background-color: var(--agent-surface-muted);
 }
 
-body.agent-mode header.site-header,
-body.agent-mode footer.site-footer {
+body.machine-mode header.site-header,
+body.machine-mode footer.site-footer {
   background-color: var(--agent-bg);
   border-color: var(--agent-border);
   color: var(--agent-text);
 }
 
-body.agent-mode header.site-header a,
-body.agent-mode footer.site-footer a {
+body.machine-mode header.site-header a,
+body.machine-mode footer.site-footer a {
   color: var(--agent-link);
   border-bottom-color: var(--agent-link);
 }
 
 /* Smooth transitions */
-body.agent-mode,
-body.agent-mode main,
-body.agent-mode header.site-header,
-body.agent-mode footer.site-footer,
-body.agent-mode .view-mode-toggle,
-body.agent-mode .bg-card,
-body.agent-mode [class*='card'],
-body.agent-mode pre,
-body.agent-mode code,
-body.agent-mode table,
-body.agent-mode th,
-body.agent-mode td,
-body.agent-mode blockquote,
-body.agent-mode hr,
-body.agent-mode a,
-body.agent-mode .agent-meta,
-body.agent-mode .terminal-prompt {
+body.machine-mode,
+body.machine-mode main,
+body.machine-mode header.site-header,
+body.machine-mode footer.site-footer,
+body.machine-mode .view-mode-toggle,
+body.machine-mode .bg-card,
+body.machine-mode [class*='card'],
+body.machine-mode pre,
+body.machine-mode code,
+body.machine-mode table,
+body.machine-mode th,
+body.machine-mode td,
+body.machine-mode blockquote,
+body.machine-mode hr,
+body.machine-mode a,
+body.machine-mode .agent-meta,
+body.machine-mode .terminal-prompt {
   transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }

@@ -115,3 +115,10 @@ Wait 5-30 minutes for DNS propagation. GitHub auto-provisions SSL.
 - [React](https://react.dev) — Interactive components (Human/Agent toggle)
 - [JetBrains Mono](https://www.jetbrains.com/lp/mono/) — Monospace font
 - [GitHub Pages](https://pages.github.com) — Hosting
+
+## View Mode Verification Checklist
+
+- [ ] Mode persists after refresh.
+- [ ] URL override works (`?view=machine` / `?view=human`) and has priority over saved preference.
+- [ ] No hydration mismatch flash when loading either mode.
+- [ ] Keyboard-only switching works (Tab to focus, Enter/Space to activate, Arrow Left/Right to switch).
