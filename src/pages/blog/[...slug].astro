@@ -31,20 +31,14 @@ const readingTime = Math.ceil(wordCount / 200);
     <Header />
   </div>
 
-  <div class="post-container">
+  <div class="post-container" data-view-fragment="human">
     <a href="/blog" class="back-link">← cd ~/blog</a>
 
     <TerminalPrompt command={`cat ${post.id.replace(/\.md$/, '')}.md`} />
 
     <div class="post-metadata">
-      <span class="metadata-item">
-        <span class="label">date:</span>
-        <span class="value">{formattedDate}</span>
-      </span>
-      <span class="metadata-item">
-        <span class="label">reading_time:</span>
-        <span class="value">{readingTime} min read</span>
-      </span>
+      <span class="metadata-item"><span class="label">date:</span><span class="value">{formattedDate}</span></span>
+      <span class="metadata-item"><span class="label">reading_time:</span><span class="value">{readingTime} min read</span></span>
       {post.data.tags && post.data.tags.length > 0 && (
         <span class="metadata-item">
           <span class="label">tags:</span>
@@ -62,184 +56,53 @@ const readingTime = Math.ceil(wordCount / 200);
     </article>
   </div>
 
+  <article class="machine-content" data-view-fragment="machine">
+    <h1>{post.data.title}</h1>
+    <p>Date: {formattedDate}</p>
+    <p>Reading time: {readingTime} minutes</p>
+    {post.data.tags && post.data.tags.length > 0 && (
+      <p>Tags: {post.data.tags.join(', ')}</p>
+    )}
+    <hr />
+    <article>
+      <Content />
+    </article>
+  </article>
+
   <div slot="footer">
     <Footer />
   </div>
 </BaseLayout>
 
 <style scoped>
-  .post-container {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-    animation: fadeIn 0.6s ease-in;
-  }
-
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(10px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  .back-link {
-    display: inline-block;
-    color: #00ff41;
-    text-decoration: none;
-    font-family: 'Courier New', monospace;
-    margin-bottom: 1rem;
-    transition: all 0.3s ease;
-    width: fit-content;
-  }
-
-  .back-link:hover {
-    transform: translateX(-4px);
-  }
-
-  .post-metadata {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-    padding: 1.5rem;
-    background-color: rgba(0, 255, 65, 0.03);
-    border-left: 2px solid #00ff41;
-    border-radius: 4px;
-    font-family: 'Courier New', monospace;
-    font-size: 0.95rem;
-  }
-
-  .metadata-item {
-    display: flex;
-    gap: 0.75rem;
-    align-items: flex-start;
-  }
-
-  .label {
-    color: #888;
-    flex-shrink: 0;
-  }
-
-  .value {
-    color: #00ff41;
-  }
-
-  .tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-  }
-
-  .tag {
-    display: inline-block;
-    padding: 0.25rem 0.75rem;
-    background-color: rgba(0, 255, 65, 0.15);
-    border: 1px solid #00ff41;
-    border-radius: 3px;
-    color: #00ff41;
-    font-size: 0.85rem;
-  }
-
-  .post-content {
-    padding: 2rem 0;
-    line-height: 1.8;
-    color: #e0e0e0;
-  }
-
-  :global(.post-content h1),
-  :global(.post-content h2),
-  :global(.post-content h3),
-  :global(.post-content h4),
-  :global(.post-content h5),
-  :global(.post-content h6) {
-    color: #00ff41;
-    margin-top: 2rem;
-    margin-bottom: 1rem;
-    font-family: 'Courier New', monospace;
-  }
-
-  :global(.post-content h1) {
-    font-size: 1.8rem;
-  }
-
-  :global(.post-content h2) {
-    font-size: 1.5rem;
-  }
-
-  :global(.post-content h3) {
-    font-size: 1.3rem;
-  }
-
-  :global(.post-content p) {
-    margin-bottom: 1rem;
-  }
-
-  :global(.post-content a) {
-    color: #00ff41;
-    text-decoration: underline;
-    transition: all 0.3s ease;
-  }
-
-  :global(.post-content a:hover) {
-    background-color: rgba(0, 255, 65, 0.1);
-    padding: 0.2rem 0.4rem;
-  }
-
-  :global(.post-content code) {
-    background-color: rgba(0, 0, 0, 0.5);
-    padding: 0.2rem 0.4rem;
-    border-radius: 3px;
-    color: #ffb86c;
-    font-family: 'Courier New', monospace;
-    font-size: 0.9em;
-  }
-
-  :global(.post-content pre) {
-    background-color: rgba(0, 0, 0, 0.5);
-    border: 1px solid #333;
-    border-radius: 4px;
-    padding: 1.5rem;
-    overflow-x: auto;
-    margin: 1.5rem 0;
-  }
-
-  :global(.post-content pre code) {
-    background-color: transparent;
-    padding: 0;
-    color: #e0e0e0;
-  }
-
-  :global(.post-content blockquote) {
-    border-left: 3px solid #00ff41;
-    padding-left: 1.5rem;
-    margin: 1.5rem 0;
-    color: #888;
-    font-style: italic;
-  }
-
-  :global(.post-content ul),
-  :global(.post-content ol) {
-    margin: 1rem 0 1rem 2rem;
-  }
-
-  :global(.post-content li) {
-    margin-bottom: 0.5rem;
-  }
-
+  .post-container { display: flex; flex-direction: column; gap: 2rem; animation: fadeIn 0.6s ease-in; }
+  .machine-content { display: flex; flex-direction: column; gap: 1rem; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(10px);} to { opacity: 1; transform: translateY(0);} }
+  .back-link { display: inline-block; color: #00ff41; text-decoration: none; font-family: 'Courier New', monospace; margin-bottom: 1rem; transition: all 0.3s ease; width: fit-content; }
+  .back-link:hover { transform: translateX(-4px); }
+  .post-metadata { display: flex; flex-direction: column; gap: 0.75rem; padding: 1.5rem; background-color: rgba(0, 255, 65, 0.03); border-left: 2px solid #00ff41; border-radius: 4px; font-family: 'Courier New', monospace; font-size: 0.95rem; }
+  .metadata-item { display: flex; gap: 0.75rem; align-items: flex-start; }
+  .label { color: #888; flex-shrink: 0; }
+  .value { color: #00ff41; }
+  .tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .tag { display: inline-block; padding: 0.25rem 0.75rem; background-color: rgba(0, 255, 65, 0.15); border: 1px solid #00ff41; border-radius: 3px; color: #00ff41; font-size: 0.85rem; }
+  .post-content { padding: 2rem 0; line-height: 1.8; color: #e0e0e0; }
+  :global(.post-content h1), :global(.post-content h2), :global(.post-content h3), :global(.post-content h4), :global(.post-content h5), :global(.post-content h6) { color: #00ff41; margin-top: 2rem; margin-bottom: 1rem; font-family: 'Courier New', monospace; }
+  :global(.post-content h1) { font-size: 1.8rem; }
+  :global(.post-content h2) { font-size: 1.5rem; }
+  :global(.post-content h3) { font-size: 1.3rem; }
+  :global(.post-content p) { margin-bottom: 1rem; }
+  :global(.post-content a) { color: #00ff41; text-decoration: underline; transition: all 0.3s ease; }
+  :global(.post-content a:hover) { background-color: rgba(0, 255, 65, 0.1); padding: 0.2rem 0.4rem; }
+  :global(.post-content code) { background-color: rgba(0, 0, 0, 0.5); padding: 0.2rem 0.4rem; border-radius: 3px; color: #ffb86c; font-family: 'Courier New', monospace; font-size: 0.9em; }
+  :global(.post-content pre) { background-color: rgba(0, 0, 0, 0.5); border: 1px solid #333; border-radius: 4px; padding: 1.5rem; overflow-x: auto; margin: 1.5rem 0; }
+  :global(.post-content pre code) { background-color: transparent; padding: 0; color: #e0e0e0; }
+  :global(.post-content blockquote) { border-left: 3px solid #00ff41; padding-left: 1.5rem; margin: 1.5rem 0; color: #888; font-style: italic; }
+  :global(.post-content ul), :global(.post-content ol) { margin: 1rem 0 1rem 2rem; }
+  :global(.post-content li) { margin-bottom: 0.5rem; }
   @media (max-width: 768px) {
-    .post-metadata {
-      font-size: 0.9rem;
-    }
-
-    :global(.post-content h1) {
-      font-size: 1.5rem;
-    }
-
-    :global(.post-content h2) {
-      font-size: 1.3rem;
-    }
+    .post-metadata { font-size: 0.9rem; }
+    :global(.post-content h1) { font-size: 1.5rem; }
+    :global(.post-content h2) { font-size: 1.3rem; }
   }
 </style>

@@ -14,7 +14,7 @@ const normalizeMode = (value: string | null): ViewMode => {
 };
 
 export default function ViewToggle() {
-  const [mode, setMode] = useState<ViewMode>('human');
+  const [mode, setMode] = useState<ViewMode>(FALLBACK_MODE);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
