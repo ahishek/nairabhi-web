@@ -15,10 +15,11 @@ export const projects: Project[] = [
     status: 'active',
   },
   {
-    name: 'card-stack',
-    description: 'A weekend project to visualize how credit card transaction flows work. Turns out, explaining payments is harder than building them.',
-    tech: ['React', 'D3.js'],
-    status: 'wip',
+    name: 'ipl-auction',
+    description: 'A project to help conduct a live Player auction built for my friends mini-leage. Has AI commentary, Live scout, Multi room support',
+    tech: ['React', 'Peer.js'],
+    url: 'https://ipl-mock-auctioneer-167669842328.us-west1.run.app/',
+    status: 'active',
   },
   {
     name: 'prd-generator',
