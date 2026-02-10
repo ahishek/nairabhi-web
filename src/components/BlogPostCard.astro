@@ -14,6 +14,8 @@ interface Props {
 const { post } = Astro.props;
 const { title, date, description, tags = [] } = post.data;
 const slug = post.id.replace(/\.md$/, '');
+const postUrl = `/blog/${slug}`;
+const tagsLabel = tags.length > 0 ? tags.join(', ') : 'untagged';
 
 const formattedDate = date.toLocaleDateString('en-US', {
   year: 'numeric',
@@ -22,10 +24,10 @@ const formattedDate = date.toLocaleDateString('en-US', {
 });
 ---
 
-<article class="blog-post-card">
+<article class="blog-post-card human-only">
   <div class="post-header">
     <span class="tree-branch">├──</span>
-    <a href={`/blog/${slug}`} class="post-title">{title}</a>
+    <a href={postUrl} class="post-title">{title}</a>
   </div>
 
   <div class="post-meta">
@@ -42,12 +44,53 @@ const formattedDate = date.toLocaleDateString('en-US', {
   <p class="post-description">{description}</p>
 </article>
 
+<article class="machine-post-card agent-only">
+  <p class="machine-post-line">
+    <span aria-hidden="true">- </span>
+    <a href={postUrl}>{title}</a>
+    <span>{` — ${formattedDate} — ${tagsLabel}`}</span>
+  </p>
+</article>
+
 <style scoped>
   .blog-post-card {
     padding: 1.5rem 0;
     border-bottom: 1px solid var(--border-color);
     transition: all 0.3s ease;
     font-family: var(--font-mono);
+  }
+
+  .human-only {
+    display: block;
+  }
+
+  .agent-only {
+    display: none;
+  }
+
+  :global(.agent-mode) .human-only {
+    display: none;
+  }
+
+  :global(.agent-mode) .agent-only {
+    display: block;
+  }
+
+  .machine-post-card {
+    border-bottom: 1px solid var(--agent-border, var(--border-color));
+    padding: 0.75rem 0;
+    font-family: var(--font-mono);
+  }
+
+  .machine-post-line {
+    margin: 0;
+    color: var(--agent-text, var(--text-primary));
+    line-height: 1.5;
+  }
+
+  .machine-post-line a {
+    color: var(--agent-link, var(--text-amber));
+    text-decoration: underline;
   }
 
   .blog-post-card:last-child {
