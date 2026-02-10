@@ -41,21 +41,11 @@ const { title, description = "Abhishek Nair — Product Manager, Engineer, Build
     <script>
       // Restore view mode from localStorage
       const savedMode = localStorage.getItem('view-mode');
-      if (savedMode === 'agent') {
+      if (savedMode === 'machine' || savedMode === 'agent') {
         document.body.classList.add('agent-mode');
+      } else {
+        document.body.classList.remove('agent-mode');
       }
-
-      // Listen for toggle events
-      document.addEventListener('view-mode-change', (e: Event) => {
-        const customEvent = e as CustomEvent;
-        const mode = customEvent.detail.mode;
-        if (mode === 'agent') {
-          document.body.classList.add('agent-mode');
-        } else {
-          document.body.classList.remove('agent-mode');
-        }
-        localStorage.setItem('view-mode', mode);
-      });
     </script>
   </body>
 </html>
