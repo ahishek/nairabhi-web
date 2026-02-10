@@ -1,105 +1,72 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import '../styles/view-toggle.css';
 
 type ViewMode = 'human' | 'machine';
 
-type ViewModeStore = {
-  getMode: () => ViewMode;
-  setMode: (mode: ViewMode) => void;
-  subscribe: (listener: (mode: ViewMode) => void) => () => void;
+const STORAGE_KEY = 'view-mode';
+
+const normalizeMode = (value: string | null): ViewMode => {
+  if (value === 'machine' || value === 'agent') {
+    return 'machine';
+  }
+
+  return 'human';
 };
 
-declare global {
-  interface Window {
-    __viewModeStore?: ViewModeStore;
-  }
-}
-
 export default function ViewToggle() {
-  const [mode, setMode] = useState<ViewMode>('human');
+  const [mode, setMode] = useState<ViewMode>(FALLBACK_MODE);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    const store = window.__viewModeStore;
-    if (!store) {
-      setMounted(true);
+    setMounted(true);
+    const savedMode = normalizeMode(localStorage.getItem(STORAGE_KEY));
+    setMode(savedMode);
+  }, []);
+
+  useEffect(() => {
+    if (!mounted) {
       return;
     }
 
-    setMode(store.getMode());
-    const unsubscribe = store.subscribe((nextMode) => setMode(nextMode));
-    setMounted(true);
-
-    return unsubscribe;
-  }, []);
-
-  const toggle = (newMode: ViewMode) => {
-    if (newMode === mode) return;
-    window.__viewModeStore?.setMode(newMode);
-  };
-
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
-    if (event.key === 'ArrowLeft') {
-      event.preventDefault();
-      toggle('human');
-    }
-
-    if (event.key === 'ArrowRight') {
-      event.preventDefault();
-      toggle('machine');
-    }
-  };
-
-  const pillStyle: React.CSSProperties = {
-    display: 'inline-flex',
-    backgroundColor: '#0d1117',
-    border: '2px solid #30363d',
-    borderRadius: '24px',
-    padding: '6px',
-    gap: '4px',
-    fontFamily: '"JetBrains Mono", monospace',
-    fontSize: '0.85rem',
-    fontWeight: 500,
-    cursor: 'pointer',
-  };
-
-  const buttonStyle = (isActive: boolean): React.CSSProperties => ({
-    padding: '8px 18px',
-    border: 'none',
-    borderRadius: '20px',
-    backgroundColor: isActive ? (mode === 'human' ? '#00ff41' : '#ffb000') : 'transparent',
-    color: isActive ? '#0d1117' : '#8b949e',
-    cursor: 'pointer',
-    transition: 'all 0.3s ease',
-    fontFamily: '"JetBrains Mono", monospace',
-    fontSize: '0.85rem',
-    fontWeight: 600,
-    letterSpacing: '0.5px',
-  });
+    localStorage.setItem(STORAGE_KEY, mode);
+    document.body.classList.toggle('agent-mode', mode === 'machine');
+  }, [mode, mounted]);
 
   if (!mounted) {
     return null;
   }
 
   return (
-    <div style={pillStyle} onKeyDown={handleKeyDown}>
-      <button
-        onClick={() => toggle('human')}
-        style={buttonStyle(mode === 'human')}
-        aria-label="Switch to Human view"
-        title="Human view"
-        aria-pressed={mode === 'human'}
-      >
-        [ HUMAN ]
-      </button>
-      <button
-        onClick={() => toggle('machine')}
-        style={buttonStyle(mode === 'machine')}
-        aria-label="Switch to Machine view"
-        title="Machine view"
-        aria-pressed={mode === 'machine'}
-      >
-        [ MACHINE ]
-      </button>
-    </div>
+    <fieldset className="view-toggle" aria-label="Content mode">
+      <legend className="view-toggle__legend">Content mode</legend>
+
+      <div className="view-toggle__option">
+        <input
+          type="radio"
+          id="content-mode-human"
+          name="content-mode"
+          value="human"
+          checked={mode === 'human'}
+          onChange={() => setMode('human')}
+        />
+        <label htmlFor="content-mode-human">[ HUMAN ]</label>
+      </div>
+
+      <div className="view-toggle__option">
+        <input
+          type="radio"
+          id="content-mode-machine"
+          name="content-mode"
+          value="machine"
+          checked={mode === 'machine'}
+          onChange={() => setMode('machine')}
+        />
+        <label htmlFor="content-mode-machine">[ MACHINE ]</label>
+      </div>
+
+      <p className="view-toggle__sr-status" aria-live="polite">
+        Content mode set to {mode === 'machine' ? 'machine' : 'human'}.
+      </p>
+    </fieldset>
   );
 }

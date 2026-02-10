@@ -23,13 +23,13 @@ const featuredProjects = projects.slice(0, 3);
     <Header />
   </div>
 
-  <div class="home-container">
+  <div class="home-container" data-view-fragment="human">
     <AsciiArt />
 
     <section class="tagline-section">
-      <p class="tagline">> Product Manager by day. Tinkerer by night.</p>
-      <p class="tagline">> Currently making credit cards work at Zeta.</p>
-      <p class="tagline">> Previously wrote code. Now I write PRDs. The bugs followed.<span class="cursor">_</span></p>
+      <p class="tagline">&gt; Product Manager by day. Tinkerer by night.</p>
+      <p class="tagline">&gt; Currently making credit cards work at Zeta.</p>
+      <p class="tagline">&gt; Previously wrote code. Now I write PRDs. The bugs followed.<span class="cursor">_</span></p>
     </section>
 
     <section class="blog-section">
@@ -62,6 +62,33 @@ const featuredProjects = projects.slice(0, 3);
     </section>
   </div>
 
+  <article class="machine-content" data-view-fragment="machine">
+    <h1>Home</h1>
+    <p>Product Manager by day. Tinkerer by night.</p>
+    <p>Currently making credit cards work at Zeta.</p>
+
+    <h2>Latest Posts</h2>
+    <ul>
+      {latestPosts.map((post) => (
+        <li>
+          <a href={`/blog/${post.id.replace(/\.md$/, '')}`}>{post.data.title}</a>
+        </li>
+      ))}
+    </ul>
+
+    <h2>Featured Projects</h2>
+    <ul>
+      {featuredProjects.map((project) => (
+        <li>
+          <strong>{project.name}</strong>: {project.description}
+        </li>
+      ))}
+    </ul>
+
+    <h2>About</h2>
+    <p>I'm a product person with an engineering background focused on fintech and payments.</p>
+  </article>
+
   <div slot="footer">
     <Footer />
   </div>
@@ -73,6 +100,16 @@ const featuredProjects = projects.slice(0, 3);
     flex-direction: column;
     gap: 3rem;
     animation: fadeIn 0.6s ease-in;
+  }
+
+  .machine-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .machine-content ul {
+    margin-left: 1.5rem;
   }
 
   @keyframes fadeIn {

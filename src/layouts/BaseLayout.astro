@@ -25,67 +25,125 @@ const { title, description = "Abhishek Nair — Product Manager, Engineer, Build
     />
     <title>{title} | nairabhi.com</title>
   </head>
-  <body class="scanlines" data-view="human">
-    <script is:inline>
-      (() => {
-        const STORAGE_KEY = 'site-view-mode';
-        const MODE_PARAM_KEY = 'view';
-        const MACHINE_CLASS = 'machine-mode';
-        const EVENT_NAME = 'view-mode-change';
+  <body class="scanlines">
+    <div class="layout-shell">
+      <div class="agent-meta" aria-hidden="true">
+        &lt;!-- You found the machine-readable version. Respect. --&gt;
+      </div>
 
-        const isValidMode = (value) => value === 'human' || value === 'machine';
+      <div class="layout-group layout-header">
+        <slot name="header" />
+      </div>
 
-        const getInitialMode = () => {
-          const params = new URLSearchParams(window.location.search);
-          const modeFromUrl = params.get(MODE_PARAM_KEY);
-          if (isValidMode(modeFromUrl)) return modeFromUrl;
+      <main class="layout-group layout-main">
+        <slot />
+      </main>
 
-          const savedMode = localStorage.getItem(STORAGE_KEY);
-          if (isValidMode(savedMode)) return savedMode;
-
-          return 'human';
-        };
-
-        const applyModeToDom = (mode) => {
-          document.body.dataset.view = mode;
-          document.body.classList.toggle(MACHINE_CLASS, mode === 'machine');
-        };
-
-        const listeners = new Set();
-        let currentMode = getInitialMode();
-
-        const setMode = (nextMode) => {
-          if (!isValidMode(nextMode) || nextMode === currentMode) return;
-          currentMode = nextMode;
-          localStorage.setItem(STORAGE_KEY, nextMode);
-          applyModeToDom(nextMode);
-          listeners.forEach((listener) => listener(nextMode));
-          document.dispatchEvent(new CustomEvent(EVENT_NAME, { detail: { mode: nextMode } }));
-        };
-
-        applyModeToDom(currentMode);
-
-        window.__viewModeStore = {
-          getMode: () => currentMode,
-          setMode,
-          subscribe: (listener) => {
-            listeners.add(listener);
-            return () => listeners.delete(listener);
-          },
-        };
-      })();
-    </script>
-
-    <div class="agent-meta" aria-hidden="true">
-      &lt;!-- You found the machine-readable version. Respect. --&gt;
+      <div class="layout-group layout-footer">
+        <slot name="footer" />
+      </div>
     </div>
 
-    <slot name="header" />
+    <script>
+      const TRANSITION_MS = 240;
+      const PHASE_A_MS = 110;
 
-    <main>
-      <slot />
-    </main>
+      const body = document.body;
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+      let phaseATimer: number | undefined;
+      let cleanupTimer: number | undefined;
 
-    <slot name="footer" />
+      const applyMode = (mode: 'human' | 'agent') => {
+        if (mode === 'agent') {
+          body.classList.add('agent-mode');
+          return;
+        }
+        body.classList.remove('agent-mode');
+      };
+
+      const transitionToMode = (mode: 'human' | 'agent') => {
+        const currentMode = body.classList.contains('agent-mode') ? 'agent' : 'human';
+
+        if (currentMode === mode) {
+          localStorage.setItem('view-mode', mode);
+          return;
+        }
+
+        if (prefersReducedMotion.matches) {
+          applyMode(mode);
+          localStorage.setItem('view-mode', mode);
+          return;
+        }
+
+        if (phaseATimer) {
+          window.clearTimeout(phaseATimer);
+        }
+
+        if (cleanupTimer) {
+          window.clearTimeout(cleanupTimer);
+        }
+
+        body.dataset.transitioning = 'phase-a';
+        body.dataset.transitionTarget = mode;
+
+        phaseATimer = window.setTimeout(() => {
+          applyMode(mode);
+          body.dataset.transitioning = 'phase-b';
+        }, PHASE_A_MS);
+
+        cleanupTimer = window.setTimeout(() => {
+          delete body.dataset.transitioning;
+          delete body.dataset.transitionTarget;
+        }, TRANSITION_MS);
+
+        localStorage.setItem('view-mode', mode);
+      };
+
+      // Restore view mode from localStorage
+      const savedMode = localStorage.getItem('view-mode');
+      if (savedMode === 'machine' || savedMode === 'agent') {
+        document.body.classList.add('agent-mode');
+      } else {
+        document.body.classList.remove('agent-mode');
+      }
+    </script>
+
+    <style is:global>
+      body[data-transitioning] .layout-main,
+      body[data-transitioning] .layout-header,
+      body[data-transitioning] .layout-footer,
+      body[data-transitioning] .layout-footer .toggle-section {
+        will-change: opacity, transform;
+      }
+
+      body[data-transitioning='phase-a'] .layout-main,
+      body[data-transitioning='phase-a'] .layout-header,
+      body[data-transitioning='phase-a'] .layout-footer,
+      body[data-transitioning='phase-a'] .layout-footer .toggle-section {
+        opacity: 0.42;
+        transform: translateY(5px);
+        transition: opacity 110ms ease, transform 110ms ease;
+      }
+
+      body[data-transitioning='phase-b'] .layout-main,
+      body[data-transitioning='phase-b'] .layout-header,
+      body[data-transitioning='phase-b'] .layout-footer,
+      body[data-transitioning='phase-b'] .layout-footer .toggle-section {
+        opacity: 1;
+        transform: translateY(0);
+        transition: opacity 130ms ease, transform 130ms ease;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        body[data-transitioning] .layout-main,
+        body[data-transitioning] .layout-header,
+        body[data-transitioning] .layout-footer,
+        body[data-transitioning] .layout-footer .toggle-section {
+          transition: none !important;
+          transform: none !important;
+          opacity: 1 !important;
+        }
+      }
+    </style>
   </body>
 </html>

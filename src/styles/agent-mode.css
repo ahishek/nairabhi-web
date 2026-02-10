@@ -1,35 +1,39 @@
-/* Agent Mode - Machine-readable GitHub-style view */
+/* Agent Mode - token-driven overrides for machine readability */
 
-body.machine-mode {
-  --agent-bg: #0d1117;
-  --agent-surface: #161b22;
-  --agent-surface-muted: #1f2630;
-  --agent-text: #e6edf3;
-  --agent-text-muted: #9da7b3;
-  --agent-border: #30363d;
-  --agent-link: #79c0ff;
-  --agent-link-hover: #a5d6ff;
-  --agent-selection-bg: #1f6feb;
-  --agent-selection-text: #f0f6fc;
-  --agent-scrollbar: #6e7681;
-  --agent-scrollbar-hover: #8b949e;
+body[data-view-mode='agent'] {
+  --bg: #0d1117;
+  --bg-primary: #0d1117;
+  --bg-card: #161b22;
+  --text-green: #e6edf3;
+  --text-green-dim: #9da7b3;
+  --accent-amber: #79c0ff;
+  --text-amber: #79c0ff;
+  --text-muted: #9da7b3;
+  --text-white: #f0f6fc;
+  --text-primary: #e6edf3;
+  --border: #30363d;
+  --border-color: #30363d;
 
-  background-color: var(--agent-bg);
-  color: var(--agent-text);
-  transition: background-color 0.3s ease, color 0.3s ease;
+  background-color: var(--bg);
+  color: var(--text-primary);
 }
 
-body.machine-mode::after {
-  display: none;
+body[data-view-mode='agent'] a {
+  color: var(--accent-amber);
+  border-bottom-color: var(--accent-amber);
 }
 
-body.machine-mode main {
-  transition: background-color 0.3s ease, color 0.3s ease;
+body[data-view-mode='agent'] code,
+body[data-view-mode='agent'] pre,
+body[data-view-mode='agent'] th,
+body[data-view-mode='agent'] td,
+body[data-view-mode='agent'] blockquote {
+  border-color: var(--border-color);
 }
 
-/* Agent meta visibility */
-.agent-meta {
-  display: none;
+body[data-view-mode='agent'] ::selection {
+  background-color: #1f6feb;
+  color: #f0f6fc;
 }
 
 body.machine-mode .agent-meta {
@@ -256,19 +260,8 @@ body.machine-mode .decorative {
   display: none;
 }
 
-/* Keep toggle styled */
-body.machine-mode .view-mode-toggle {
-  background-color: var(--agent-surface);
-  color: var(--agent-text);
-  border: 1px solid var(--agent-border);
-}
-
-body.machine-mode .view-mode-toggle:hover {
-  background-color: var(--agent-surface-muted);
-}
-
-body.machine-mode header.site-header,
-body.machine-mode footer.site-footer {
+body.agent-mode header.site-header,
+body.agent-mode footer.site-footer {
   background-color: var(--agent-bg);
   border-color: var(--agent-border);
   color: var(--agent-text);
@@ -281,22 +274,21 @@ body.machine-mode footer.site-footer a {
 }
 
 /* Smooth transitions */
-body.machine-mode,
-body.machine-mode main,
-body.machine-mode header.site-header,
-body.machine-mode footer.site-footer,
-body.machine-mode .view-mode-toggle,
-body.machine-mode .bg-card,
-body.machine-mode [class*='card'],
-body.machine-mode pre,
-body.machine-mode code,
-body.machine-mode table,
-body.machine-mode th,
-body.machine-mode td,
-body.machine-mode blockquote,
-body.machine-mode hr,
-body.machine-mode a,
-body.machine-mode .agent-meta,
-body.machine-mode .terminal-prompt {
+body.agent-mode,
+body.agent-mode main,
+body.agent-mode header.site-header,
+body.agent-mode footer.site-footer,
+body.agent-mode .bg-card,
+body.agent-mode [class*='card'],
+body.agent-mode pre,
+body.agent-mode code,
+body.agent-mode table,
+body.agent-mode th,
+body.agent-mode td,
+body.agent-mode blockquote,
+body.agent-mode hr,
+body.agent-mode a,
+body.agent-mode .agent-meta,
+body.agent-mode .terminal-prompt {
   transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
