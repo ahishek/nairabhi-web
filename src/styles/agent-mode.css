@@ -280,23 +280,12 @@ body.agent-mode footer.site-footer a {
   border-bottom-color: var(--agent-link);
 }
 
-/* Smooth transitions */
-body.agent-mode,
-body.agent-mode main,
-body.agent-mode header.site-header,
-body.agent-mode footer.site-footer,
-body.agent-mode .view-mode-toggle,
-body.agent-mode .bg-card,
-body.agent-mode [class*='card'],
-body.agent-mode pre,
-body.agent-mode code,
-body.agent-mode table,
-body.agent-mode th,
-body.agent-mode td,
-body.agent-mode blockquote,
-body.agent-mode hr,
-body.agent-mode a,
-body.agent-mode .agent-meta,
-body.agent-mode .terminal-prompt {
+/* Smooth transitions on key layout wrappers */
+body,
+body .layout-main,
+body .layout-header,
+body .layout-footer,
+body .layout-footer .toggle-section,
+body .agent-meta {
   transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
