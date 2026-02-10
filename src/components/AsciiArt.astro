@@ -1,16 +1,33 @@
 ---
 ---
 
-<div class="ascii-art-container">
-  <div class="human-only">
-    <pre class="ascii-art"> █████╗ ██████╗ ██╗  ██╗██╗███████╗██╗  ██╗███████╗██╗  ██╗  ███╗   ██╗ █████╗ ██╗██████╗
+<div class="ascii-art-container" style="max-width: 100%; overflow-x: hidden;">
+  <div class="human-only" style="max-width: 100%;">
+    <pre
+      class="ascii-art"
+      style="
+        margin: 0;
+        padding: 0;
+        line-height: 1;
+        max-width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        white-space: pre;
+        display: inline-block;
+        transform-origin: left top;
+        /* Desktop: scale to fit so full name is visible, no scroll */
+        transform: scale(min(1, calc((100vw - 32px) / 1200)));
+      "
+    > █████╗ ██████╗ ██╗  ██╗██╗███████╗██╗  ██╗███████╗██╗  ██╗  ███╗   ██╗ █████╗ ██╗██████╗
 ██╔══██╗██╔══██╗██║  ██║██║██╔════╝██║  ██║██╔════╝██║ ██╔╝  ████╗  ██║██╔══██╗██║██╔══██╗
 ███████║██████╔╝███████║██║███████╗███████║█████╗  █████╔╝   ██╔██╗ ██║███████║██║██████╔╝
 ██╔══██║██╔══██╗██╔══██║██║╚════██║██╔══██║██╔══╝  ██╔═██╗   ██║╚██╗██║██╔══██║██║██╔══██╗
 ██║  ██║██████╔╝██║  ██║██║███████║██║  ██║███████╗██║  ██╗  ██║ ╚████║██║  ██║██║██║  ██║
 ╚═╝  ╚═╝╚═════╝ ╚═╝  ╚═╝╚═╝╚══════╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝  ╚═╝  ╚═══╝╚═╝  ╚═╝╚═╝╚═╝  ╚═╝</pre>
-    <div class="tagline">
-      <span class="tagline-text">$ Full-stack developer & creative thinker</span><span class="cursor">_</span>
+
+    <div class="tagline" style="max-width: 100%;">
+      <span class="tagline-text">$ Product Manager, Tinkerer & wannabe developer</span
+      ><span class="cursor">_</span>
     </div>
   </div>
 
@@ -19,6 +36,7 @@
     <div class="agent-subtitle">Product Manager, Tinkerer & wannabe developer</div>
   </div>
 </div>
+
 
 <style scoped>
   .ascii-art-container {
