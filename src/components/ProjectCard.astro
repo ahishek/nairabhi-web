@@ -19,9 +19,11 @@ const statusColor = {
   wip: 'var(--text-amber)',
   archived: 'var(--text-muted)',
 };
+
+const techLabel = tech.join(', ');
 ---
 
-<article class="project-card">
+<article class="project-card human-only">
   <div class="project-header">
     <span class="status" style={`color: ${statusColor[status]}`}>
       {statusDisplay[status]}
@@ -44,6 +46,17 @@ const statusColor = {
   </div>
 </article>
 
+<article class="machine-project-card agent-only">
+  <h3 class="machine-project-title">
+    {url ? <a href={url}>{name}</a> : name}
+  </h3>
+  <ul class="machine-project-list">
+    <li><strong>Status:</strong> {status}</li>
+    <li><strong>Tech:</strong> {techLabel}</li>
+    <li><strong>Description:</strong> {description}</li>
+  </ul>
+</article>
+
 <style scoped>
   .project-card {
     background-color: var(--bg-card);
@@ -54,6 +67,48 @@ const statusColor = {
     transition: all 0.3s ease;
     font-family: var(--font-mono);
     font-size: 0.95rem;
+  }
+
+  .human-only {
+    display: block;
+  }
+
+  .agent-only {
+    display: none;
+  }
+
+  :global(.agent-mode) .human-only {
+    display: none;
+  }
+
+  :global(.agent-mode) .agent-only {
+    display: block;
+  }
+
+  .machine-project-card {
+    border-bottom: 1px solid var(--agent-border, var(--border-color));
+    padding: 1rem 0;
+    font-family: var(--font-mono);
+  }
+
+  .machine-project-title {
+    margin: 0 0 0.6rem;
+    font-size: 1rem;
+  }
+
+  .machine-project-title a {
+    color: var(--agent-link, var(--text-amber));
+    text-decoration: underline;
+  }
+
+  .machine-project-list {
+    margin: 0;
+    padding-left: 1.25rem;
+    color: var(--agent-text, var(--text-primary));
+  }
+
+  .machine-project-list li {
+    margin-bottom: 0.3rem;
   }
 
   .project-card:hover {

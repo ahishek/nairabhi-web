@@ -89,13 +89,6 @@ body.agent-mode a {
   text-decoration: underline;
 }
 
-body.agent-mode a[href]::after {
-  content: ' (' attr(href) ')';
-  color: var(--agent-text-muted);
-  font-size: 0.85em;
-  margin-left: 2px;
-}
-
 body.agent-mode a:hover {
   color: var(--agent-link-hover);
   opacity: 1;
