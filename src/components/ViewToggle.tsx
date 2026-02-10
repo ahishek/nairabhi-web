@@ -1,19 +1,17 @@
 import { useEffect, useState } from 'react';
+import '../styles/view-toggle.css';
 
-type ViewMode = 'human' | 'agent';
-type ViewModeStore = {
-  getMode: () => ViewMode;
-  setMode: (mode: ViewMode) => void;
-  subscribe: (listener: (mode: ViewMode) => void) => () => void;
-};
+type ViewMode = 'human' | 'machine';
 
-declare global {
-  interface Window {
-    __VIEW_MODE_STORE__?: ViewModeStore;
+const STORAGE_KEY = 'view-mode';
+
+const normalizeMode = (value: string | null): ViewMode => {
+  if (value === 'machine' || value === 'agent') {
+    return 'machine';
   }
-}
 
-const FALLBACK_MODE: ViewMode = 'human';
+  return 'human';
+};
 
 export default function ViewToggle() {
   const [mode, setMode] = useState<ViewMode>(FALLBACK_MODE);
@@ -21,70 +19,54 @@ export default function ViewToggle() {
 
   useEffect(() => {
     setMounted(true);
+    const savedMode = normalizeMode(localStorage.getItem(STORAGE_KEY));
+    setMode(savedMode);
+  }, []);
 
-    const store = window.__VIEW_MODE_STORE__;
-    if (!store) {
+  useEffect(() => {
+    if (!mounted) {
       return;
     }
 
-    setMode(store.getMode());
-    return store.subscribe((nextMode) => setMode(nextMode));
-  }, []);
-
-  const toggle = (newMode: ViewMode) => {
-    window.__VIEW_MODE_STORE__?.setMode(newMode);
-    setMode(newMode);
-  };
-
-  const pillStyle: React.CSSProperties = {
-    display: 'inline-flex',
-    backgroundColor: '#0d1117',
-    border: '2px solid #30363d',
-    borderRadius: '24px',
-    padding: '6px',
-    gap: '4px',
-    fontFamily: '"JetBrains Mono", monospace',
-    fontSize: '0.85rem',
-    fontWeight: 500,
-    cursor: 'pointer',
-  };
-
-  const buttonStyle = (isActive: boolean): React.CSSProperties => ({
-    padding: '8px 18px',
-    border: 'none',
-    borderRadius: '20px',
-    backgroundColor: isActive ? (mode === 'human' ? '#00ff41' : '#ffb000') : 'transparent',
-    color: isActive ? '#0d1117' : '#8b949e',
-    cursor: 'pointer',
-    transition: 'all 0.3s ease',
-    fontFamily: '"JetBrains Mono", monospace',
-    fontSize: '0.85rem',
-    fontWeight: 600,
-    letterSpacing: '0.5px',
-  });
+    localStorage.setItem(STORAGE_KEY, mode);
+    document.body.classList.toggle('agent-mode', mode === 'machine');
+  }, [mode, mounted]);
 
   if (!mounted) {
     return null;
   }
 
   return (
-    <div style={pillStyle}>
-      <button
-        onClick={() => toggle('human')}
-        style={buttonStyle(mode === 'human')}
-        aria-label="Switch to Human view"
-        title="Human view"
-      >
-        [ HUMAN ]
-      </button>
-      <button
-        onClick={() => toggle('agent')}
-        style={buttonStyle(mode === 'agent')}
-        aria-label="Switch to Agent view"
-        title="Agent view"
-      >
-        [ AGENT ]
-      </button>
-    </div>
+    <fieldset className="view-toggle" aria-label="Content mode">
+      <legend className="view-toggle__legend">Content mode</legend>
+
+      <div className="view-toggle__option">
+        <input
+          type="radio"
+          id="content-mode-human"
+          name="content-mode"
+          value="human"
+          checked={mode === 'human'}
+          onChange={() => setMode('human')}
+        />
+        <label htmlFor="content-mode-human">[ HUMAN ]</label>
+      </div>
+
+      <div className="view-toggle__option">
+        <input
+          type="radio"
+          id="content-mode-machine"
+          name="content-mode"
+          value="machine"
+          checked={mode === 'machine'}
+          onChange={() => setMode('machine')}
+        />
+        <label htmlFor="content-mode-machine">[ MACHINE ]</label>
+      </div>
+
+      <p className="view-toggle__sr-status" aria-live="polite">
+        Content mode set to {mode === 'machine' ? 'machine' : 'human'}.
+      </p>
+    </fieldset>
   );
 }

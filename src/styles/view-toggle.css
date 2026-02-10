@@ -1,0 +1,106 @@
+.view-toggle {
+  --toggle-bg: color-mix(in srgb, var(--bg-secondary) 88%, transparent);
+  --toggle-border: var(--border-color);
+  --toggle-text: var(--text-muted);
+  --toggle-text-active: var(--bg-primary);
+  --toggle-human: var(--text-green);
+  --toggle-machine: var(--text-amber);
+
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  border: 1px solid var(--toggle-border);
+  border-radius: 999px;
+  padding: 0.2rem;
+  background: var(--toggle-bg);
+  backdrop-filter: blur(2px);
+}
+
+.view-toggle__legend {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  border: 0;
+  white-space: nowrap;
+}
+
+.view-toggle__option {
+  position: relative;
+}
+
+.view-toggle__option input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+  pointer-events: none;
+}
+
+.view-toggle__option label {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  padding: 0.4rem 0.75rem;
+  color: var(--toggle-text);
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  transition: background-color 0.25s ease, color 0.25s ease, box-shadow 0.25s ease;
+  user-select: none;
+}
+
+.view-toggle__option input:focus-visible + label {
+  outline: 2px solid var(--text-green);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 3px rgba(0, 255, 65, 0.2);
+}
+
+.view-toggle__option input:checked + label {
+  color: var(--toggle-text-active);
+}
+
+.view-toggle__option input[value='human']:checked + label {
+  background-color: var(--toggle-human);
+}
+
+.view-toggle__option input[value='machine']:checked + label {
+  background-color: var(--toggle-machine);
+}
+
+.view-toggle__sr-status {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  border: 0;
+  white-space: nowrap;
+}
+
+body.agent-mode .view-toggle {
+  --toggle-bg: color-mix(in srgb, var(--agent-surface) 90%, transparent);
+  --toggle-border: var(--agent-border);
+  --toggle-text: var(--agent-text-muted);
+  --toggle-text-active: var(--agent-bg);
+}
+
+@media (max-width: 480px) {
+  .view-toggle {
+    padding: 0.15rem;
+    gap: 0.15rem;
+  }
+
+  .view-toggle__option label {
+    font-size: 0.66rem;
+    padding: 0.35rem 0.55rem;
+  }
+}

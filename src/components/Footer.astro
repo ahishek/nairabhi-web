@@ -31,14 +31,12 @@ const socialLinks = [
 
     <div class="divider"></div>
 
-    <div class="toggle-section">
-      <ViewToggle client:load />
-    </div>
-
-    <div class="divider"></div>
-
     <div class="footer-text">
       <p class="copyright">© {currentYear} Abhishek Nair. No cookies, no trackers, just vibes.</p>
+    </div>
+
+    <div class="toggle-section" aria-hidden="false">
+      <ViewToggle client:load />
     </div>
   </div>
 </footer>
@@ -58,7 +56,7 @@ const socialLinks = [
     margin: 0 auto;
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 1.25rem;
     align-items: center;
   }
 
@@ -100,9 +98,11 @@ const socialLinks = [
   }
 
   .toggle-section {
-    width: 100%;
+    width: auto;
     display: flex;
     justify-content: center;
+    margin-top: 0.35rem;
+    opacity: 0.85;
   }
 
   .footer-text {
@@ -131,6 +131,11 @@ const socialLinks = [
 
     .copyright {
       font-size: 0.8rem;
+    }
+
+    .toggle-section {
+      margin-top: 0.25rem;
+      opacity: 0.95;
     }
   }
 
