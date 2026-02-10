@@ -1,302 +1,42 @@
-/* Agent Mode - Machine-readable GitHub-style view */
+/* Agent Mode - token-driven overrides for machine readability */
 
-body.agent-mode {
-  --agent-bg: #0d1117;
-  --agent-surface: #161b22;
-  --agent-surface-muted: #1f2630;
-  --agent-text: #e6edf3;
-  --agent-text-muted: #9da7b3;
-  --agent-border: #30363d;
-  --agent-link: #79c0ff;
-  --agent-link-hover: #a5d6ff;
-  --agent-selection-bg: #1f6feb;
-  --agent-selection-text: #f0f6fc;
-  --agent-scrollbar: #6e7681;
-  --agent-scrollbar-hover: #8b949e;
+body[data-view-mode='agent'] {
+  --bg: #0d1117;
+  --bg-primary: #0d1117;
+  --bg-card: #161b22;
+  --text-green: #e6edf3;
+  --text-green-dim: #9da7b3;
+  --accent-amber: #79c0ff;
+  --text-amber: #79c0ff;
+  --text-muted: #9da7b3;
+  --text-white: #f0f6fc;
+  --text-primary: #e6edf3;
+  --border: #30363d;
+  --border-color: #30363d;
 
-  background-color: var(--agent-bg);
-  color: var(--agent-text);
-  transition: background-color 0.3s ease, color 0.3s ease;
+  background-color: var(--bg);
+  color: var(--text-primary);
 }
 
-body.agent-mode::after {
-  display: none;
+body[data-view-mode='agent'] a {
+  color: var(--accent-amber);
+  border-bottom-color: var(--accent-amber);
 }
 
-body.agent-mode main {
-  transition: background-color 0.3s ease, color 0.3s ease;
+body[data-view-mode='agent'] code,
+body[data-view-mode='agent'] pre,
+body[data-view-mode='agent'] th,
+body[data-view-mode='agent'] td,
+body[data-view-mode='agent'] blockquote {
+  border-color: var(--border-color);
 }
 
-/* Agent meta visibility */
-.agent-meta {
-  display: none;
+body[data-view-mode='agent'] ::selection {
+  background-color: #1f6feb;
+  color: #f0f6fc;
 }
 
-body.agent-mode .agent-meta {
-  display: block;
-  color: var(--agent-text-muted);
-  font-style: italic;
-  font-size: 0.9em;
-  margin-bottom: 2em;
-}
-
-/* Headings with markdown syntax */
-body.agent-mode h1,
-body.agent-mode h2,
-body.agent-mode h3,
-body.agent-mode h4,
-body.agent-mode h5,
-body.agent-mode h6 {
-  color: var(--agent-text);
-  margin-top: 1.25em;
-  margin-bottom: 0.5em;
-}
-
-body.agent-mode h1::before {
-  content: '# ';
-  color: var(--agent-text-muted);
-}
-
-body.agent-mode h2::before {
-  content: '## ';
-  color: var(--agent-text-muted);
-}
-
-body.agent-mode h3::before {
-  content: '### ';
-  color: var(--agent-text-muted);
-}
-
-body.agent-mode h4::before {
-  content: '#### ';
-  color: var(--agent-text-muted);
-}
-
-body.agent-mode h5::before {
-  content: '##### ';
-  color: var(--agent-text-muted);
-}
-
-body.agent-mode h6::before {
-  content: '###### ';
-  color: var(--agent-text-muted);
-}
-
-/* Links with URL display */
-body.agent-mode a {
-  color: var(--agent-link);
-  border-bottom: none;
-  text-decoration: underline;
-}
-
-body.agent-mode a[href]::after {
-  content: ' (' attr(href) ')';
-  color: var(--agent-text-muted);
-  font-size: 0.85em;
-  margin-left: 2px;
-}
-
-body.agent-mode a:hover {
-  color: var(--agent-link-hover);
-  opacity: 1;
-  text-decoration: underline;
-}
-
-/* Code blocks */
-body.agent-mode code {
-  background-color: var(--agent-surface-muted);
-  color: var(--agent-text);
-  padding: 2px 6px;
-  border-radius: 6px;
-}
-
-body.agent-mode pre {
-  background-color: var(--agent-surface);
-  color: var(--agent-text);
-  border: 1px solid var(--agent-border);
-  border-radius: 6px;
-  padding: 16px;
-}
-
-body.agent-mode pre code {
-  background-color: transparent;
-  color: inherit;
-  border-radius: 0;
-  padding: 0;
-}
-
-/* Remove decorative elements */
-body.agent-mode .scanlines::after {
-  display: none;
-}
-
-body.agent-mode .cursor {
-  display: none;
-}
-
-body.agent-mode .terminal-prompt {
-  color: var(--agent-text-muted);
-  font-weight: 400;
-}
-
-/* Blockquotes */
-body.agent-mode blockquote {
-  border-left: 3px solid var(--agent-border);
-  color: var(--agent-text-muted);
-  padding-left: 1em;
-  margin: 0 0 16px 0;
-}
-
-/* Horizontal rules with markdown style */
-body.agent-mode hr {
-  background-color: transparent;
-  border: none;
-  height: auto;
-  margin: 24px 0;
-  color: var(--agent-text-muted);
-}
-
-body.agent-mode hr::before {
-  content: '---';
-  color: var(--agent-text-muted);
-  display: block;
-  text-align: center;
-}
-
-/* Lists */
-body.agent-mode ul,
-body.agent-mode ol {
-  margin-left: 2em;
-  margin-bottom: 1em;
-}
-
-body.agent-mode li {
-  margin-bottom: 0.25em;
-}
-
-/* Tables */
-body.agent-mode table {
-  border-collapse: collapse;
-  width: 100%;
-  margin: 16px 0;
-}
-
-body.agent-mode th,
-body.agent-mode td {
-  padding: 6px 13px;
-  border: 1px solid var(--agent-border);
-}
-
-body.agent-mode th {
-  background-color: var(--agent-surface);
-  color: var(--agent-text);
-  font-weight: 700;
-}
-
-body.agent-mode td {
-  background-color: var(--agent-bg);
-}
-
-/* Remove box shadows and gradients */
-body.agent-mode .bg-card {
-  background-color: var(--agent-bg);
-  border-radius: 0;
-  border-bottom: 1px solid var(--agent-border);
-}
-
-/* Card elements - transform to simple borders */
-body.agent-mode [class*='card'] {
-  background-color: var(--agent-bg);
-  border-radius: 0;
-  border: none;
-  border-bottom: 1px solid var(--agent-border);
-}
-
-/* Navigation - remove special styling */
-body.agent-mode nav a {
-  color: var(--agent-link);
-}
-
-body.agent-mode nav a::before {
-  content: none;
-}
-
-/* Selection */
-body.agent-mode ::selection {
-  background-color: var(--agent-selection-bg);
-  color: var(--agent-selection-text);
-}
-
-body.agent-mode ::-moz-selection {
-  background-color: var(--agent-selection-bg);
-  color: var(--agent-selection-text);
-}
-
-/* Scrollbar in agent mode */
-body.agent-mode ::-webkit-scrollbar-thumb {
-  background-color: var(--agent-scrollbar);
-}
-
-body.agent-mode ::-webkit-scrollbar-thumb:hover {
-  background-color: var(--agent-scrollbar-hover);
-}
-
-/* Paragraphs */
-body.agent-mode p {
-  margin-bottom: 1em;
-  line-height: 1.6;
-}
-
-/* ASCII art and decorative elements */
-body.agent-mode .ascii-art {
-  display: none;
-}
-
-body.agent-mode .decorative {
-  display: none;
-}
-
-/* Keep toggle styled */
-body.agent-mode .view-mode-toggle {
-  background-color: var(--agent-surface);
-  color: var(--agent-text);
-  border: 1px solid var(--agent-border);
-}
-
-body.agent-mode .view-mode-toggle:hover {
-  background-color: var(--agent-surface-muted);
-}
-
-body.agent-mode header.site-header,
-body.agent-mode footer.site-footer {
-  background-color: var(--agent-bg);
-  border-color: var(--agent-border);
-  color: var(--agent-text);
-}
-
-body.agent-mode header.site-header a,
-body.agent-mode footer.site-footer a {
-  color: var(--agent-link);
-  border-bottom-color: var(--agent-link);
-}
-
-/* Smooth transitions */
-body.agent-mode,
-body.agent-mode main,
-body.agent-mode header.site-header,
-body.agent-mode footer.site-footer,
-body.agent-mode .view-mode-toggle,
-body.agent-mode .bg-card,
-body.agent-mode [class*='card'],
-body.agent-mode pre,
-body.agent-mode code,
-body.agent-mode table,
-body.agent-mode th,
-body.agent-mode td,
-body.agent-mode blockquote,
-body.agent-mode hr,
-body.agent-mode a,
-body.agent-mode .agent-meta,
-body.agent-mode .terminal-prompt {
-  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+body[data-view-mode='agent'] ::-moz-selection {
+  background-color: #1f6feb;
+  color: #f0f6fc;
 }

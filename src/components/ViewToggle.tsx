@@ -1,30 +1,39 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 type ViewMode = 'human' | 'agent';
+type ViewModeStore = {
+  getMode: () => ViewMode;
+  setMode: (mode: ViewMode) => void;
+  subscribe: (listener: (mode: ViewMode) => void) => () => void;
+};
+
+declare global {
+  interface Window {
+    __VIEW_MODE_STORE__?: ViewModeStore;
+  }
+}
+
+const FALLBACK_MODE: ViewMode = 'human';
 
 export default function ViewToggle() {
-  const [mode, setMode] = useState<ViewMode>('human');
+  const [mode, setMode] = useState<ViewMode>(FALLBACK_MODE);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
-    const saved = localStorage.getItem('view-mode') as ViewMode | null;
-    if (saved) {
-      setMode(saved);
-      dispatchModeChange(saved);
+
+    const store = window.__VIEW_MODE_STORE__;
+    if (!store) {
+      return;
     }
+
+    setMode(store.getMode());
+    return store.subscribe((nextMode) => setMode(nextMode));
   }, []);
 
-  const dispatchModeChange = (newMode: ViewMode) => {
-    document.dispatchEvent(
-      new CustomEvent('view-mode-change', { detail: { mode: newMode } })
-    );
-  };
-
   const toggle = (newMode: ViewMode) => {
+    window.__VIEW_MODE_STORE__?.setMode(newMode);
     setMode(newMode);
-    localStorage.setItem('view-mode', newMode);
-    dispatchModeChange(newMode);
   };
 
   const pillStyle: React.CSSProperties = {

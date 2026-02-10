@@ -25,11 +25,7 @@ const { title, description = "Abhishek Nair — Product Manager, Engineer, Build
     />
     <title>{title} | nairabhi.com</title>
   </head>
-  <body class="scanlines">
-    <div class="agent-meta" aria-hidden="true">
-      &lt;!-- You found the machine-readable version. Respect. --&gt;
-    </div>
-
+  <body class="scanlines" data-view-mode="human">
     <slot name="header" />
 
     <main>
@@ -39,22 +35,55 @@ const { title, description = "Abhishek Nair — Product Manager, Engineer, Build
     <slot name="footer" />
 
     <script>
-      // Restore view mode from localStorage
-      const savedMode = localStorage.getItem('view-mode');
-      if (savedMode === 'agent') {
-        document.body.classList.add('agent-mode');
-      }
+      const VIEW_MODE_KEY = 'view-mode';
+      const HUMAN_MODE = 'human';
+      const AGENT_MODE = 'agent';
 
-      // Listen for toggle events
-      document.addEventListener('view-mode-change', (e: Event) => {
-        const customEvent = e as CustomEvent;
-        const mode = customEvent.detail.mode;
-        if (mode === 'agent') {
-          document.body.classList.add('agent-mode');
-        } else {
-          document.body.classList.remove('agent-mode');
-        }
-        localStorage.setItem('view-mode', mode);
+      const getSavedMode = () => {
+        const savedMode = localStorage.getItem(VIEW_MODE_KEY);
+        return savedMode === AGENT_MODE ? AGENT_MODE : HUMAN_MODE;
+      };
+
+      const listeners = new Set();
+      let currentMode = getSavedMode();
+
+      const applyMode = (nextMode) => {
+        currentMode = nextMode === AGENT_MODE ? AGENT_MODE : HUMAN_MODE;
+        document.body.dataset.viewMode = currentMode;
+        document.body.classList.toggle('agent-mode', currentMode === AGENT_MODE);
+        localStorage.setItem(VIEW_MODE_KEY, currentMode);
+      };
+
+      applyMode(currentMode);
+
+      const viewModeStore = {
+        getMode() {
+          return currentMode;
+        },
+        setMode(nextMode) {
+          const normalizedMode = nextMode === AGENT_MODE ? AGENT_MODE : HUMAN_MODE;
+          if (normalizedMode === currentMode) {
+            return;
+          }
+
+          applyMode(normalizedMode);
+          listeners.forEach((listener) => listener(currentMode));
+        },
+        subscribe(listener) {
+          listeners.add(listener);
+          listener(currentMode);
+
+          return () => {
+            listeners.delete(listener);
+          };
+        },
+      };
+
+      window.__VIEW_MODE_STORE__ = viewModeStore;
+
+      document.addEventListener('view-mode-change', (event) => {
+        const customEvent = event;
+        viewModeStore.setMode(customEvent.detail?.mode);
       });
     </script>
   </body>
