@@ -101,16 +101,11 @@ const { title, description = "Abhishek Nair — Product Manager, Engineer, Build
 
       // Restore view mode from localStorage
       const savedMode = localStorage.getItem('view-mode');
-      if (savedMode === 'agent') {
-        applyMode('agent');
+      if (savedMode === 'machine' || savedMode === 'agent') {
+        document.body.classList.add('agent-mode');
+      } else {
+        document.body.classList.remove('agent-mode');
       }
-
-      // Listen for toggle events
-      document.addEventListener('view-mode-change', (e: Event) => {
-        const customEvent = e as CustomEvent;
-        const mode = customEvent.detail.mode as 'human' | 'agent';
-        transitionToMode(mode);
-      });
     </script>
 
     <style is:global>
