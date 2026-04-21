@@ -24,9 +24,10 @@ const formattedDate = post.data.date.toLocaleDateString('en-US', {
 
 const wordCount = post.body ? post.body.split(/\s+/).length : 0;
 const readingTime = Math.ceil(wordCount / 200);
+const slug = post.id.replace(/\.md$/, '');
 ---
 
-<BaseLayout title={post.data.title}>
+<BaseLayout title={post.data.title} description={post.data.description} canonicalPath={`/blog/${slug}`}>
   <div slot="header">
     <Header />
   </div>
@@ -34,7 +35,7 @@ const readingTime = Math.ceil(wordCount / 200);
   <div class="post-container" data-view-fragment="human">
     <a href="/blog" class="back-link">← cd ~/blog</a>
 
-    <TerminalPrompt command={`cat ${post.id.replace(/\.md$/, '')}.md`} />
+    <TerminalPrompt command={`cat ${slug}.md`} />
 
     <div class="post-metadata">
       <span class="metadata-item"><span class="label">date:</span><span class="value">{formattedDate}</span></span>

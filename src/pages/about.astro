@@ -10,15 +10,27 @@ const funFactsHtml = `{
   <span class="json-key">"guilty_pleasure"</span>: <span class="json-string">"refactoring code I no longer own"</span>,
   <span class="json-key">"hot_take"</span>: <span class="json-string">"the best PRD is a working prototype"</span>
 }`;
+
+const description =
+  'About Abhishek Nair, a product manager in India with fintech, payments, credit cards, UPI, consumer product, and engineering experience across Zeta, Treebo, and Practo.';
 ---
 
-<BaseLayout title="About">
+<BaseLayout title="About Abhishek Nair - Product Manager in India" description={description} canonicalPath="/about">
   <div slot="header">
     <Header />
   </div>
 
   <div class="about-container" data-view-fragment="human">
     <TerminalPrompt command="cat about.md" />
+
+    <section class="profile-heading">
+      <h1>Product manager in India building fintech and consumer payment products</h1>
+      <p>
+        I operate at the intersection of product strategy, systems thinking,
+        and shipping discipline: credit cards, UPI, payments infrastructure,
+        consumer journeys, and high-agency execution.
+      </p>
+    </section>
 
     <section class="intro-section">
       <p class="intro-text">
@@ -106,6 +118,9 @@ const funFactsHtml = `{
   .machine-content { display: flex; flex-direction: column; gap: 1rem; }
   .machine-content ul { margin-left: 1.5rem; }
   @keyframes fadeIn { from { opacity: 0; transform: translateY(10px);} to { opacity: 1; transform: translateY(0);} }
+  .profile-heading { display: flex; flex-direction: column; gap: 1rem; }
+  .profile-heading h1 { color: var(--text-amber); font-family: var(--font-mono); font-size: clamp(1.5rem, 4vw, 2.2rem); line-height: 1.25; margin: 0; }
+  .profile-heading p { color: #e0e0e0; font-size: 1.05rem; line-height: 1.8; margin: 0; }
   .intro-section { padding: 1.5rem; background-color: rgba(0, 255, 65, 0.03); border-left: 2px solid #00ff41; }
   .intro-text { color: #e0e0e0; line-height: 1.8; margin: 1rem 0; font-size: 1.05rem; }
   .intro-text:first-child { margin-top: 0; }

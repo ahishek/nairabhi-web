@@ -1,0 +1,152 @@
+<script>
+  type ModelContextTool = {
+    name: string;
+    title: string;
+    description: string;
+    inputSchema: Record<string, unknown>;
+    annotations?: { readOnlyHint?: boolean };
+    execute: (input: Record<string, unknown>) => Promise<unknown>;
+  };
+
+  type ModelContext = {
+    registerTool?: (tool: ModelContextTool, options?: { signal?: AbortSignal }) => void;
+    provideContext?: (context: { tools: ModelContextTool[] }, options?: { signal?: AbortSignal }) => void;
+  };
+
+  const sitePages = [
+    {
+      path: '/',
+      url: 'https://nairabhi.com/',
+      title: 'Abhishek Nair',
+      summary: 'High-agency product manager based in India with fintech, credit cards, UPI, payments, engineering, and scaled consumer product experience.',
+    },
+    {
+      path: '/about',
+      url: 'https://nairabhi.com/about',
+      title: 'About Abhishek Nair',
+      summary: 'Career background across product management in India, engineering, fintech, startups, BITS Pilani, ISB, and Tuck.',
+    },
+    {
+      path: '/projects',
+      url: 'https://nairabhi.com/projects',
+      title: 'Projects',
+      summary: 'Side projects including nairabhi.com, card-stack, prd-generator, and startup-graveyard.',
+    },
+    {
+      path: '/blog',
+      url: 'https://nairabhi.com/blog',
+      title: 'Blog',
+      summary: 'Public writing about product management, building things, technology, and business.',
+    },
+    {
+      path: '/blog/hello-world',
+      url: 'https://nairabhi.com/blog/hello-world',
+      title: 'Hello World, Obviously',
+      summary: 'The first blog post introducing the site, terminal aesthetic, and Human/Agent toggle.',
+    },
+    {
+      path: '/docs/api',
+      url: 'https://nairabhi.com/docs/api',
+      title: 'Discovery API Docs',
+      summary: 'Documentation for nairabhi.com machine-readable discovery resources.',
+    },
+  ];
+
+  function searchPages(query: unknown) {
+    const normalizedQuery = String(query || '').trim().toLowerCase();
+    if (!normalizedQuery) {
+      return [];
+    }
+
+    const terms = normalizedQuery.split(/\s+/).filter(Boolean);
+
+    return sitePages.filter((page) => {
+      const haystack = `${page.title} ${page.summary} ${page.path}`.toLowerCase();
+      return terms.every((term) => haystack.includes(term));
+    });
+  }
+
+  function currentPageMetadata() {
+    const description = document.querySelector<HTMLMetaElement>('meta[name="description"]')?.content || '';
+
+    return {
+      url: window.location.href,
+      path: window.location.pathname,
+      title: document.title,
+      description,
+      canonicalResources: {
+        robots: 'https://nairabhi.com/robots.txt',
+        sitemap: 'https://nairabhi.com/sitemap.xml',
+        llms: 'https://nairabhi.com/llms.txt',
+        apiCatalog: 'https://nairabhi.com/.well-known/api-catalog',
+        agentSkills: 'https://nairabhi.com/.well-known/agent-skills/index.json',
+      },
+    };
+  }
+
+  const tools: ModelContextTool[] = [
+    {
+      name: 'site.get_current_page',
+      title: 'Get current page',
+      description: 'Return metadata for the current nairabhi.com page.',
+      inputSchema: {
+        type: 'object',
+        additionalProperties: false,
+        properties: {},
+      },
+      annotations: { readOnlyHint: true },
+      execute: async () => currentPageMetadata(),
+    },
+    {
+      name: 'site.list_pages',
+      title: 'List pages',
+      description: 'List canonical public pages and discovery resources on nairabhi.com.',
+      inputSchema: {
+        type: 'object',
+        additionalProperties: false,
+        properties: {},
+      },
+      annotations: { readOnlyHint: true },
+      execute: async () => ({
+        pages: sitePages,
+        discovery: currentPageMetadata().canonicalResources,
+      }),
+    },
+    {
+      name: 'site.search_content',
+      title: 'Search content',
+      description: 'Search public page summaries for a query string.',
+      inputSchema: {
+        type: 'object',
+        additionalProperties: false,
+        properties: {
+          query: {
+            type: 'string',
+            minLength: 1,
+          },
+        },
+        required: ['query'],
+      },
+      annotations: { readOnlyHint: true },
+      execute: async (input) => ({
+        query: String(input.query || ''),
+        results: searchPages(input.query),
+      }),
+    },
+  ];
+
+  const modelContext = (navigator as Navigator & { modelContext?: ModelContext }).modelContext;
+
+  if (modelContext) {
+    const controller = new AbortController();
+    window.addEventListener('pagehide', () => controller.abort(), { once: true });
+
+    if (typeof modelContext.registerTool === 'function') {
+      for (const tool of tools) {
+        modelContext.registerTool(tool, { signal: controller.signal });
+      }
+    } else if (typeof modelContext.provideContext === 'function') {
+      modelContext.provideContext({ tools }, { signal: controller.signal });
+    }
+  }
+</script>

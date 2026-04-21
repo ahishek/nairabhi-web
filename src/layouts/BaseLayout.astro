@@ -1,13 +1,26 @@
 ---
 import '../styles/global.css';
 import '../styles/agent-mode.css';
+import WebMCP from '../components/WebMCP.astro';
 
 interface Props {
   title: string;
   description?: string;
+  canonicalPath?: string;
+  jsonLd?: Record<string, unknown> | Record<string, unknown>[];
 }
 
-const { title, description = "Abhishek Nair — Product Manager, Engineer, Builder" } = Astro.props;
+const {
+  title,
+  description = 'Abhishek Nair - product manager in India with fintech, credit cards, UPI, engineering, and consumer product experience.',
+  canonicalPath,
+  jsonLd,
+} = Astro.props;
+
+const siteUrl = Astro.site ?? new URL('https://nairabhi.com');
+const canonicalUrl = new URL(canonicalPath ?? Astro.url.pathname, siteUrl).toString();
+const fullTitle = `${title} | nairabhi.com`;
+const jsonLdString = jsonLd ? JSON.stringify(jsonLd) : '';
 ---
 
 <!doctype html>
@@ -16,14 +29,26 @@ const { title, description = "Abhishek Nair — Product Manager, Engineer, Build
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
+    <meta name="author" content="Abhishek Nair" />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <link rel="canonical" href={canonicalUrl} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="nairabhi.com" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap"
       rel="stylesheet"
     />
-    <title>{title} | nairabhi.com</title>
+    <title>{fullTitle}</title>
+    {jsonLdString && <script type="application/ld+json" set:html={jsonLdString} />}
   </head>
   <body class="scanlines">
     <div class="layout-shell">
@@ -44,6 +69,8 @@ const { title, description = "Abhishek Nair — Product Manager, Engineer, Build
       </div>
     </div>
 
+    <WebMCP />
+
     <script>
       const TRANSITION_MS = 240;
       const PHASE_A_MS = 110;
@@ -56,9 +83,13 @@ const { title, description = "Abhishek Nair — Product Manager, Engineer, Build
       const applyMode = (mode: 'human' | 'agent') => {
         if (mode === 'agent') {
           body.classList.add('agent-mode');
+          body.classList.add('machine-mode');
+          body.dataset.viewMode = 'agent';
           return;
         }
         body.classList.remove('agent-mode');
+        body.classList.remove('machine-mode');
+        body.dataset.viewMode = 'human';
       };
 
       const transitionToMode = (mode: 'human' | 'agent') => {
@@ -102,9 +133,9 @@ const { title, description = "Abhishek Nair — Product Manager, Engineer, Build
       // Restore view mode from localStorage
       const savedMode = localStorage.getItem('view-mode');
       if (savedMode === 'machine' || savedMode === 'agent') {
-        document.body.classList.add('agent-mode');
+        applyMode('agent');
       } else {
-        document.body.classList.remove('agent-mode');
+        applyMode('human');
       }
     </script>
 

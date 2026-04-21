@@ -10,9 +10,12 @@ const posts = await getCollection('blog');
 const sortedPosts = posts
   .filter(post => !post.data.draft)
   .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+const description =
+  'Writing by Abhishek Nair on product management, fintech, consumer products, payments, engineering, and building with high agency from India.';
 ---
 
-<BaseLayout title="Blog">
+<BaseLayout title="Blog - Product Management and Fintech" description={description} canonicalPath="/blog">
   <div slot="header">
     <Header />
   </div>

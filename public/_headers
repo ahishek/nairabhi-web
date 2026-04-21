@@ -1,0 +1,41 @@
+/*
+  X-Content-Type-Options: nosniff
+
+/
+  Link: </.well-known/api-catalog>; rel="api-catalog"; type="application/linkset+json", </.well-known/openapi.json>; rel="service-desc"; type="application/vnd.oai.openapi+json", </docs/api>; rel="service-doc"; type="text/html", </llms.txt>; rel="describedby"; type="text/plain", </sitemap.xml>; rel="describedby"; type="application/xml"
+  Vary: Accept
+
+/index.html
+  Link: </.well-known/api-catalog>; rel="api-catalog"; type="application/linkset+json", </.well-known/openapi.json>; rel="service-desc"; type="application/vnd.oai.openapi+json", </docs/api>; rel="service-doc"; type="text/html", </llms.txt>; rel="describedby"; type="text/plain", </sitemap.xml>; rel="describedby"; type="application/xml"
+  Vary: Accept
+
+/robots.txt
+  Content-Type: text/plain; charset=utf-8
+
+/sitemap.xml
+  Content-Type: application/xml; charset=utf-8
+
+/llms.txt
+  Content-Type: text/plain; charset=utf-8
+
+/.well-known/api-catalog
+  Content-Type: application/linkset+json; profile="https://www.rfc-editor.org/info/rfc9727"; charset=utf-8
+  Link: </.well-known/openapi.json>; rel="service-desc"; type="application/vnd.oai.openapi+json", </docs/api>; rel="service-doc"; type="text/html", </.well-known/status.json>; rel="status"; type="application/json"
+
+/.well-known/oauth-authorization-server
+  Content-Type: application/json; charset=utf-8
+
+/.well-known/openid-configuration
+  Content-Type: application/json; charset=utf-8
+
+/.well-known/oauth-protected-resource
+  Content-Type: application/json; charset=utf-8
+
+/.well-known/mcp/server-card.json
+  Content-Type: application/json; charset=utf-8
+
+/.well-known/agent-skills/index.json
+  Content-Type: application/json; charset=utf-8
+
+/mcp
+  Content-Type: application/json; charset=utf-8

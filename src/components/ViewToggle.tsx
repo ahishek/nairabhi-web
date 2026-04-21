@@ -4,6 +4,7 @@ import '../styles/view-toggle.css';
 type ViewMode = 'human' | 'machine';
 
 const STORAGE_KEY = 'view-mode';
+const FALLBACK_MODE: ViewMode = 'human';
 
 const normalizeMode = (value: string | null): ViewMode => {
   if (value === 'machine' || value === 'agent') {
@@ -30,6 +31,8 @@ export default function ViewToggle() {
 
     localStorage.setItem(STORAGE_KEY, mode);
     document.body.classList.toggle('agent-mode', mode === 'machine');
+    document.body.classList.toggle('machine-mode', mode === 'machine');
+    document.body.dataset.viewMode = mode === 'machine' ? 'agent' : 'human';
   }, [mode, mounted]);
 
   if (!mounted) {

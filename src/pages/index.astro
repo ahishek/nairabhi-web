@@ -16,9 +16,82 @@ const latestPosts = allPosts
   .slice(0, 3);
 
 const featuredProjects = projects.slice(0, 3);
+
+const description =
+  'Abhishek Nair is a high-agency product manager based in India with experience leading fintech, credit cards, UPI, payments, engineering, and scaled consumer product work at Zeta, Treebo, and Practo.';
+
+const personJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: 'Abhishek Nair',
+  url: 'https://nairabhi.com/',
+  jobTitle: 'Product Manager',
+  description,
+  email: 'mailto:contactabhisheknair@gmail.com',
+  image: 'https://nairabhi.com/favicon.svg',
+  homeLocation: {
+    '@type': 'Place',
+    name: 'India',
+    address: {
+      '@type': 'PostalAddress',
+      addressCountry: 'IN',
+    },
+  },
+  worksFor: {
+    '@type': 'Organization',
+    name: 'Zeta',
+  },
+  alumniOf: [
+    {
+      '@type': 'CollegeOrUniversity',
+      name: 'Indian School of Business',
+    },
+    {
+      '@type': 'CollegeOrUniversity',
+      name: 'Tuck School of Business at Dartmouth',
+    },
+    {
+      '@type': 'CollegeOrUniversity',
+      name: 'BITS Pilani',
+    },
+  ],
+  knowsAbout: [
+    'Product management',
+    'Consumer fintech',
+    'Credit cards',
+    'UPI',
+    'Payments',
+    'Product strategy',
+    'Scaled product execution',
+    'Android engineering',
+    'AI product prototypes',
+  ],
+  sameAs: [
+    'https://github.com/ahishek',
+    'https://x.com/Abhi1Nair',
+    'https://linkedin.com/in/abhishek-nair-83627730',
+  ],
+};
+
+const websiteJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: 'nairabhi.com',
+  url: 'https://nairabhi.com/',
+  description,
+  author: {
+    '@type': 'Person',
+    name: 'Abhishek Nair',
+  },
+};
 ---
 
-<BaseLayout title="Home">
+<BaseLayout
+  title="Abhishek Nair - Product Manager in India"
+  description={description}
+  canonicalPath="/"
+  jsonLd={[personJsonLd, websiteJsonLd]}
+>
   <div slot="header">
     <Header />
   </div>
@@ -26,10 +99,20 @@ const featuredProjects = projects.slice(0, 3);
   <div class="home-container" data-view-fragment="human">
     <AsciiArt />
 
+    <section class="positioning-section" aria-labelledby="positioning-title">
+      <h1 id="positioning-title">Abhishek Nair - product manager in India</h1>
+      <p>
+        High-agency product manager with deep fintech experience across credit
+        cards, UPI, payments, and consumer-scale product execution. Currently
+        building card products at Zeta after earlier engineering roles at
+        Practo and Treebo.
+      </p>
+    </section>
+
     <section class="tagline-section">
-      <p class="tagline">&gt; Product Manager by day. Tinkerer by night.</p>
-      <p class="tagline">&gt; Currently making UPI and card payments work at Zeta.</p>
-      <p class="tagline">&gt; Previously wrote code. Now I write PRDs. The bugs followed.<span class="cursor">_</span></p>
+      <p class="tagline">> Product manager based in India, leading scaled fintech and consumer payment products.</p>
+      <p class="tagline">> Currently making credit cards and UPI work better at Zeta.</p>
+      <p class="tagline">> Ex-engineer, high-agency builder, MBA, and weekend prototype addict.<span class="cursor">_</span></p>
     </section>
 
     <section class="blog-section">
@@ -63,9 +146,9 @@ const featuredProjects = projects.slice(0, 3);
   </div>
 
   <article class="machine-content" data-view-fragment="machine">
-    <h1>Home</h1>
-    <p>Product Manager by day. Tinkerer by night.</p>
-    <p>Currently making credit cards work at Zeta.</p>
+    <h1>Abhishek Nair - product manager in India</h1>
+    <p>High-agency product manager with deep fintech experience across credit cards, UPI, payments, and consumer-scale product execution.</p>
+    <p>Currently building card products at Zeta after earlier engineering roles at Practo and Treebo.</p>
 
     <h2>Latest Posts</h2>
     <ul>
@@ -128,6 +211,28 @@ const featuredProjects = projects.slice(0, 3);
     padding: 1.5rem;
     border-left: 2px solid #00ff41;
     background-color: rgba(0, 255, 65, 0.05);
+  }
+
+  .positioning-section {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin: 1rem 0 0;
+  }
+
+  .positioning-section h1 {
+    color: var(--text-amber);
+    font-family: var(--font-mono);
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    line-height: 1.2;
+    margin: 0;
+  }
+
+  .positioning-section p {
+    color: #e0e0e0;
+    font-size: 1.05rem;
+    line-height: 1.8;
+    margin: 0;
   }
 
   .tagline {

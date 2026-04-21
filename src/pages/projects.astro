@@ -10,9 +10,12 @@ const sortedProjects = projects.sort((a, b) => {
   const statusOrder = { active: 0, wip: 1, archived: 2 };
   return statusOrder[a.status] - statusOrder[b.status];
 });
+
+const description =
+  'Projects by Abhishek Nair, a high-agency product manager in India building fintech, payments, AI product, and engineering prototypes.';
 ---
 
-<BaseLayout title="Projects">
+<BaseLayout title="Projects - Product and Fintech Builds" description={description} canonicalPath="/projects">
   <div slot="header">
     <Header />
   </div>
