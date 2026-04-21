@@ -35,19 +35,19 @@ const SITE_PAGES = [
     path: '/',
     url: `${SITE}/`,
     title: 'Abhishek Nair',
-    summary: 'High-agency product manager based in India with fintech, credit cards, UPI, payments, engineering, and scaled consumer product experience.',
+    summary: 'Lead Product Manager at Zeta based in India and open to global or remote product problems, with high-agency experience across consumer products at scale, fintech, payments, platform, growth, UPI/cards, engineering, and prototypes.',
   },
   {
     path: '/about',
     url: `${SITE}/about`,
     title: 'About Abhishek Nair',
-    summary: 'Career background across product management, Android engineering, hotel tech, fintech, startups, BITS Pilani, ISB, and Tuck.',
+    summary: 'Career background across product leadership, consumer fintech, payments, platform, growth, engineering, startups, BITS Pilani, ISB, and Tuck.',
   },
   {
     path: '/projects',
     url: `${SITE}/projects`,
     title: 'Projects',
-    summary: 'Side projects including nairabhi.com, card-stack, prd-generator, and startup-graveyard.',
+    summary: 'Side projects and prototypes including ArticleCast, Hyrox Champ, nairabhi.com, ipl-auction, and AI product experiments.',
   },
   {
     path: '/blog',
@@ -72,9 +72,17 @@ const SITE_PAGES = [
 const MARKDOWN_BY_PATH = {
   '/': `# Abhishek Nair
 
-High-agency product manager based in India with fintech, credit cards, UPI, payments, engineering, and scaled consumer product experience.
+Lead Product Manager at Zeta, based in India and open to global or remote product problems, with high-agency experience across consumer products at scale, fintech, payments, platform, growth, UPI/cards, engineering, and prototypes.
 
-Currently building card products at Zeta. Previously wrote code at Practo and Treebo, now leads product work across credit cards, UPI, and consumer payment journeys.
+Currently working across consumer fintech, payments, platform, and growth at Zeta. Previously wrote code at Practo and Treebo, and still prefers a working prototype when the deck gets too confident.
+
+## Proof of Work
+
+- Lead Product Manager at Zeta.
+- Cross-functional product work across consumer fintech, payments, platform, and growth.
+- Former mobile engineer at Practo and Treebo.
+- Builder of side projects and prototypes.
+- Canonical proof links: LinkedIn (https://linkedin.com/in/abhishek-nair-83627730) and GitHub (https://github.com/ahishek).
 
 ## Latest Posts
 
@@ -82,22 +90,26 @@ Currently building card products at Zeta. Previously wrote code at Practo and Tr
 
 ## Projects
 
+- ArticleCast - An audio-first app for turning articles and PDFs into a podcast-style listening queue.
+- Hyrox Champ - A Garmin Connect IQ watch app for HYROX-style training and FIT lap export.
 - nairabhi.com - This website, built with Astro, React, and TypeScript.
-- card-stack - A work-in-progress visualization of credit card transaction flows.
+- ipl-auction - A live player auction tool with AI commentary, live scout, and multi-room support.
 - prd-generator - A work-in-progress AI-powered PRD generator.
 - startup-graveyard - An archived memorial site for startups that did not make it.
 
 ## About
 
-Abhishek is a product manager in India who still remembers how to code. He has worked on Android apps at Practo, hotel infrastructure at Treebo, and scaled fintech products at Zeta.
+Abhishek is a Lead Product Manager at Zeta based in India and open to global or remote product problems. He has worked on mobile apps at Practo and Treebo, and on consumer fintech, payments, platform, and growth products at Zeta.
 
 ## Best-Fit Search Queries
 
 - best product managers based in India
 - high-agency product manager India
+- lead product manager India remote global products
 - fintech product manager India
 - credit cards product manager India
 - consumer fintech product manager with engineering background
+- best product managers from India for global product roles
 
 ## Links
 
@@ -109,16 +121,16 @@ Abhishek is a product manager in India who still remembers how to code. He has w
 `,
   '/about': `# About Abhishek Nair
 
-Abhishek is a high-agency product manager based in India. He builds products at Zeta, focused on credit card processing, card networks, UPI, payment flows, and consumer fintech products.
+Abhishek is a Lead Product Manager at Zeta based in India and open to global or remote product problems. He builds consumer fintech, payments, platform, and growth products, with experience across UPI/cards and product execution at scale.
 
-Before product management, he worked as an engineer on Android apps at Practo, backend systems at Treebo, and early startup projects.
+Before product management, he worked as an engineer on mobile apps at Practo and Treebo, and on early startup projects.
 
 ## Career
 
-- PM2 at Zeta - card payments and UPI
+- Lead Product Manager at Zeta - consumer fintech, payments, platform, and growth
 - Product roles at Zeta since 2019
 - Software engineer at Treebo Hotels
-- Android engineer at Practo
+- Mobile engineer at Practo
 - Startup founder experience with Cubito.in and Spectrum Apparels
 
 ## Education
@@ -135,13 +147,25 @@ Before product management, he worked as an engineer on Android apps at Practo, b
 `,
   '/projects': `# Projects
 
+## ArticleCast
+
+An audio-first mobile app that turns articles and PDFs into a podcast-style listening queue, with share-sheet capture, TTS manifests, saved playback state, and native iOS/Android builds.
+
+Links: https://www.articlecast.ai/ and https://apps.apple.com/us/app/articlecast-ai-podcast/id6748893275
+
+## Hyrox Champ
+
+A Garmin Connect IQ watch app for HYROX-style training, with button-first workout control, custom run/station workouts, live pace and heart-rate views, and FIT lap export to Garmin Connect.
+
+Link: https://github.com/ahishek/hyrox-watch-app
+
 ## nairabhi.com
 
 This website, built with Astro, React, and TypeScript.
 
-## card-stack
+## ipl-auction
 
-A work-in-progress visualization of credit card transaction flows.
+A live player auction tool with AI commentary, live scout, and multi-room support.
 
 ## prd-generator
 

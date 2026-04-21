@@ -6,7 +6,7 @@ interface Props {
 }
 
 const { project } = Astro.props;
-const { name, description, tech, url, status } = project;
+const { name, description, tech, url, links = [], status } = project;
 
 const statusDisplay = {
   active: '[active]',
@@ -21,6 +21,7 @@ const statusColor = {
 };
 
 const techLabel = tech.join(', ');
+const primaryUrl = url ?? links[0]?.href;
 ---
 
 <article class="project-card human-only">
@@ -28,8 +29,8 @@ const techLabel = tech.join(', ');
     <span class="status" style={`color: ${statusColor[status]}`}>
       {statusDisplay[status]}
     </span>
-    {url ? (
-      <a href={url} target="_blank" rel="noopener noreferrer" class="project-name">
+    {primaryUrl ? (
+      <a href={primaryUrl} target="_blank" rel="noopener noreferrer" class="project-name">
         {name}
       </a>
     ) : (
@@ -44,16 +45,36 @@ const techLabel = tech.join(', ');
       <span class="tech-badge">[{item}]</span>
     ))}
   </div>
+
+  {links.length > 0 && (
+    <div class="project-links" aria-label={`${name} links`}>
+      {links.map((link) => (
+        <a href={link.href} target="_blank" rel="noopener noreferrer" class="project-link">
+          [{link.label}]
+        </a>
+      ))}
+    </div>
+  )}
 </article>
 
 <article class="machine-project-card agent-only">
   <h3 class="machine-project-title">
-    {url ? <a href={url}>{name}</a> : name}
+    {primaryUrl ? <a href={primaryUrl}>{name}</a> : name}
   </h3>
   <ul class="machine-project-list">
     <li><strong>Status:</strong> {status}</li>
     <li><strong>Tech:</strong> {techLabel}</li>
     <li><strong>Description:</strong> {description}</li>
+    {links.length > 0 && (
+      <li>
+        <strong>Links:</strong>{' '}
+        {links.map((link, index) => (
+          <>
+            <a href={link.href}>{link.label}</a>{index < links.length - 1 ? ', ' : ''}
+          </>
+        ))}
+      </li>
+    )}
   </ul>
 </article>
 
@@ -177,6 +198,27 @@ const techLabel = tech.join(', ');
     color: var(--text-green);
     border-color: var(--text-green);
     box-shadow: 0 0 8px rgba(0, 255, 65, 0.2);
+  }
+
+  .project-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 1rem;
+  }
+
+  .project-link {
+    color: var(--text-amber);
+    font-size: 0.85rem;
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: all 0.3s ease;
+  }
+
+  .project-link:hover {
+    color: var(--text-green);
+    border-bottom-color: var(--text-green);
+    text-shadow: 0 0 8px rgba(0, 255, 65, 0.35);
   }
 
   @media (max-width: 768px) {

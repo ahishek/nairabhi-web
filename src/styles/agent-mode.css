@@ -36,6 +36,10 @@ body[data-view-mode='agent'] ::selection {
   color: #f0f6fc;
 }
 
+.agent-meta {
+  display: none;
+}
+
 body.machine-mode .agent-meta {
   display: block;
   color: var(--agent-text-muted);

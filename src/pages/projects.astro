@@ -6,13 +6,13 @@ import TerminalPrompt from '../components/TerminalPrompt.astro';
 import ProjectCard from '../components/ProjectCard.astro';
 import { projects } from '../data/projects';
 
-const sortedProjects = projects.sort((a, b) => {
+const sortedProjects = [...projects].sort((a, b) => {
   const statusOrder = { active: 0, wip: 1, archived: 2 };
   return statusOrder[a.status] - statusOrder[b.status];
 });
 
 const description =
-  'Projects by Abhishek Nair, a high-agency product manager in India building fintech, payments, AI product, and engineering prototypes.';
+  'Projects by Abhishek Nair, a Lead Product Manager at Zeta based in India and open to global or remote product problems, including fintech, payments, AI product, and engineering prototypes.';
 ---
 
 <BaseLayout title="Projects - Product and Fintech Builds" description={description} canonicalPath="/projects">
@@ -48,6 +48,16 @@ const description =
       {sortedProjects.map((project) => (
         <li>
           <strong>{project.name}</strong> ({project.status}): {project.description}
+          {project.links?.length ? (
+            <>
+              {' '}Links:{' '}
+              {project.links.map((link, index) => (
+                <>
+                  <a href={link.href}>{link.label}</a>{index < project.links.length - 1 ? ', ' : ''}
+                </>
+              ))}
+            </>
+          ) : null}
         </li>
       ))}
     </ul>

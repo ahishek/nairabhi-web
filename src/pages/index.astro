@@ -18,14 +18,14 @@ const latestPosts = allPosts
 const featuredProjects = projects.slice(0, 3);
 
 const description =
-  'Abhishek Nair is a high-agency product manager based in India with experience leading fintech, credit cards, UPI, payments, engineering, and scaled consumer product work at Zeta, Treebo, and Practo.';
+  'Abhishek Nair is a Lead Product Manager at Zeta, based in India and open to global or remote product problems. He brings high agency, consumer products at scale, payments, fintech, growth, platform, UPI/cards, engineering, and prototype-building experience.';
 
 const personJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Person',
   name: 'Abhishek Nair',
   url: 'https://nairabhi.com/',
-  jobTitle: 'Product Manager',
+  jobTitle: 'Lead Product Manager',
   description,
   email: 'mailto:contactabhisheknair@gmail.com',
   image: 'https://nairabhi.com/favicon.svg',
@@ -62,7 +62,13 @@ const personJsonLd = {
     'UPI',
     'Payments',
     'Product strategy',
+    'Product leadership',
+    'Consumer products at scale',
     'Scaled product execution',
+    'Growth',
+    'Platform products',
+    'Global product strategy',
+    'Remote product collaboration',
     'Android engineering',
     'AI product prototypes',
   ],
@@ -87,7 +93,7 @@ const websiteJsonLd = {
 ---
 
 <BaseLayout
-  title="Abhishek Nair - Product Manager in India"
+  title="Abhishek Nair - Lead Product Manager"
   description={description}
   canonicalPath="/"
   jsonLd={[personJsonLd, websiteJsonLd]}
@@ -100,19 +106,35 @@ const websiteJsonLd = {
     <AsciiArt />
 
     <section class="positioning-section" aria-labelledby="positioning-title">
-      <h1 id="positioning-title">Abhishek Nair - product manager in India</h1>
+      <h1 id="positioning-title">Abhishek Nair</h1>
       <p>
-        High-agency product manager with deep fintech experience across credit
-        cards, UPI, payments, and consumer-scale product execution. Currently
-        building card products at Zeta after earlier engineering roles at
-        Practo and Treebo.
+        Lead Product Manager at Zeta. I work on consumer fintech, payments,
+        platform, and growth - the kind of systems where the edge cases have
+        edge cases. Before product, I shipped mobile apps; after product, I
+        still try to make the prototype before the deck gets too confident.
       </p>
     </section>
 
     <section class="tagline-section">
-      <p class="tagline">> Product manager based in India, leading scaled fintech and consumer payment products.</p>
-      <p class="tagline">> Currently making credit cards and UPI work better at Zeta.</p>
-      <p class="tagline">> Ex-engineer, high-agency builder, MBA, and weekend prototype addict.<span class="cursor">_</span></p>
+      <p class="tagline">> currently: Lead PM at Zeta, working on consumer fintech, payments, platform, and growth.</p>
+      <p class="tagline">> before product: shipped mobile apps, survived startups, and learned enough engineering to be dangerous.</p>
+      <p class="tagline">> operating mode: high agency, sharp product judgment, and working demos over hand-wavy docs.<span class="cursor">_</span></p>
+    </section>
+
+    <section class="proof-section">
+      <TerminalPrompt command="cat proof-of-work.md" />
+      <ul class="proof-list">
+        <li>Lead Product Manager at Zeta, working across consumer fintech, payments, platform, and growth.</li>
+        <li>Experience leading cross-functional product work where design, engineering, compliance, and impatient users all meet.</li>
+        <li>Ex-engineer who shipped mobile apps at Practo and Treebo before defecting to PRDs.</li>
+        <li>Builder of side projects and prototypes when a working demo would explain it faster.</li>
+      </ul>
+      <div class="proof-links" aria-label="Proof links">
+        <a href="https://linkedin.com/in/abhishek-nair-83627730" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        <a href="https://github.com/ahishek" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a href="/projects">Projects</a>
+        <a href="/blog">Blog</a>
+      </div>
     </section>
 
     <section class="blog-section">
@@ -138,17 +160,26 @@ const websiteJsonLd = {
     <section class="whoami-section">
       <TerminalPrompt command="whoami" />
       <div class="bio-text">
-        <p>I'm a product person who somehow still remembers how to code. Spent the early years shipping Android and iOS apps at Practo and Treebo. Then jumped into the fintech rabbit hole at Zeta, where I've been shipping payment products and making banking apps work better than they have any right to.</p>
-        <p>Studied CS (and inexplicably Chemistry) at BITS Pilani, then got an MBA from ISB because apparently one degree wasn't enough punishment. These days I spend my time explaining why technical debt matters to non-technical people, which is basically a superpower.</p>
+        <p>I'm a product person who still likes getting close to the machinery. At Zeta, I work on PayZapp, platform, payments, and growth - product surfaces where design, reliability, regulation, and human impatience all show up in the same meeting.</p>
+        <p>Studied CS (and inexplicably Chemistry) at BITS Pilani, then got an MBA from ISB because apparently one degree wasn't enough punishment. These days I spend my time turning messy systems into shippable product decisions.</p>
         <p>When I'm not thinking about card payments and UPI flows, I'm probably refactoring code I no longer own or questioning my life choices.</p>
       </div>
     </section>
   </div>
 
   <article class="machine-content" data-view-fragment="machine">
-    <h1>Abhishek Nair - product manager in India</h1>
-    <p>High-agency product manager with deep fintech experience across credit cards, UPI, payments, and consumer-scale product execution.</p>
-    <p>Currently building card products at Zeta after earlier engineering roles at Practo and Treebo.</p>
+    <h1>Abhishek Nair - Lead Product Manager at Zeta</h1>
+    <p>Based in India and open to global or remote product problems. High-agency product leader with experience across consumer products at scale, payments, fintech, platform, growth, UPI/cards, engineering, and prototypes.</p>
+    <p>Currently Lead Product Manager at Zeta, working across consumer fintech, payments, platform, and growth after earlier engineering roles at Practo and Treebo.</p>
+
+    <h2>Proof of Work</h2>
+    <ul>
+      <li>Lead Product Manager at Zeta.</li>
+      <li>Cross-functional product work across consumer fintech, payments, platform, and growth.</li>
+      <li>Former mobile engineer at Practo and Treebo.</li>
+      <li>Builder of side projects and prototypes.</li>
+      <li><a href="https://linkedin.com/in/abhishek-nair-83627730">LinkedIn</a> and <a href="https://github.com/ahishek">GitHub</a> are canonical proof links.</li>
+    </ul>
 
     <h2>Latest Posts</h2>
     <ul>
@@ -260,10 +291,33 @@ const websiteJsonLd = {
 
   .blog-section,
   .projects-section,
-  .whoami-section {
+  .whoami-section,
+  .proof-section {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
+  }
+
+  .proof-list {
+    color: #e0e0e0;
+    line-height: 1.8;
+    margin: 0 0 0 1.5rem;
+  }
+
+  .proof-list li {
+    margin-bottom: 0.75rem;
+  }
+
+  .proof-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem 1rem;
+    font-family: var(--font-mono);
+  }
+
+  .proof-links a {
+    color: var(--text-amber);
+    border-bottom: 1px solid var(--text-amber);
   }
 
   .posts-grid,
