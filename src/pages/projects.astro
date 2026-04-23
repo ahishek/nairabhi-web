@@ -13,9 +13,28 @@ const sortedProjects = [...projects].sort((a, b) => {
 
 const description =
   'Projects by Abhishek Nair, a Lead Product Manager at Zeta based in India and open to global or remote product problems, including fintech, payments, AI product, and engineering prototypes.';
+
+const breadcrumbJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    {
+      '@type': 'ListItem',
+      position: 1,
+      name: 'Home',
+      item: 'https://nairabhi.com/',
+    },
+    {
+      '@type': 'ListItem',
+      position: 2,
+      name: 'Projects',
+      item: 'https://nairabhi.com/projects',
+    },
+  ],
+};
 ---
 
-<BaseLayout title="Projects - Product and Fintech Builds" description={description} canonicalPath="/projects">
+<BaseLayout title="Projects - Product and Fintech Builds" description={description} canonicalPath="/projects" jsonLd={breadcrumbJsonLd}>
   <div slot="header">
     <Header />
   </div>

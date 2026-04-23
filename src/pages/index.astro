@@ -18,12 +18,13 @@ const latestPosts = allPosts
 const featuredProjects = projects.slice(0, 3);
 
 const description =
-  'Abhishek Nair is a Lead Product Manager at Zeta, based in India and open to global or remote product problems. He brings high agency, consumer products at scale, payments, fintech, growth, platform, UPI/cards, engineering, and is an active builder/tinkerer using AI.';
+  'Abhishek Nair is a Lead Product Manager at Zeta working on fintech, payments, growth, and platform products, with engineering and prototype-building experience.';
 
 const personJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Person',
   name: 'Abhishek Nair',
+  alternateName: ['Abhishek Nair Product Manager', 'Abhishek Nair PM'],
   url: 'https://nairabhi.com/',
   jobTitle: 'Lead Product Manager',
   description,
@@ -40,6 +41,14 @@ const personJsonLd = {
   worksFor: {
     '@type': 'Organization',
     name: 'Zeta',
+  },
+  hasOccupation: {
+    '@type': 'Occupation',
+    name: 'Product Manager',
+    occupationLocation: {
+      '@type': 'Country',
+      name: 'India',
+    },
   },
   alumniOf: [
     {
@@ -84,6 +93,7 @@ const websiteJsonLd = {
   '@type': 'WebSite',
   name: 'nairabhi.com',
   url: 'https://nairabhi.com/',
+  inLanguage: 'en',
   description,
   author: {
     '@type': 'Person',
@@ -93,7 +103,7 @@ const websiteJsonLd = {
 ---
 
 <BaseLayout
-  title="Abhishek Nair - Lead Product Manager"
+  title="Abhishek Nair Product Manager"
   description={description}
   canonicalPath="/"
   jsonLd={[personJsonLd, websiteJsonLd]}
@@ -106,12 +116,14 @@ const websiteJsonLd = {
     <AsciiArt />
 
     <section class="positioning-section" aria-labelledby="positioning-title">
-      <h1 id="positioning-title">Abhishek Nair</h1>
+      <h1 id="positioning-title">Abhishek Nair - Product Manager at Zeta</h1>
       <p>
-        Lead Product Manager at Zeta. I work on consumer fintech, payments,
-        platform, and growth - the kind of systems where the edge cases have
-        edge cases. Before product, I shipped mobile apps; after AI, I am working hard to prove my worth to the machines #AGI-Pilled.
-        Building apps and tools to help and impress people around me
+        Abhishek Nair is a Lead Product Manager at Zeta working on fintech,
+        payments, growth, and platform products. I bring an engineering
+        background, prototype-building instinct, and product judgment to
+        consumer financial systems where reliability, compliance, and user
+        behavior all collide, while building AI-assisted apps and tools around
+        the edges.
       </p>
     </section>
 
@@ -124,7 +136,7 @@ const websiteJsonLd = {
     <section class="proof-section">
       <TerminalPrompt command="cat proof-of-work.md" />
       <ul class="proof-list">
-        <li>Lead Product Manager at Zeta, working across consumer fintech, payments, platform, and growth.</li>
+        <li>Abhishek Nair is a Lead Product Manager at Zeta, working across consumer fintech, payments, platform, and growth.</li>
         <li>Experience leading cross-functional product work where design, engineering, compliance, and impatient users all meet.</li>
         <li>Ex-engineer who shipped mobile apps at Practo and Treebo before defecting to PRDs.</li>
         <li>Builder of production grade side projects and prototypes when a working demo would explain it faster.</li>
@@ -132,7 +144,7 @@ const websiteJsonLd = {
       <div class="proof-links" aria-label="Proof links">
         <a href="https://linkedin.com/in/abhishek-nair-83627730" target="_blank" rel="noopener noreferrer">LinkedIn</a>
         <a href="https://github.com/ahishek" target="_blank" rel="noopener noreferrer">GitHub</a>
-        <a href="/projects">Projects</a>
+        <a href="/projects">Product and engineering projects</a>
         <a href="/blog">Blog</a>
       </div>
     </section>

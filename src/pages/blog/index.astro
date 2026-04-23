@@ -13,9 +13,28 @@ const sortedPosts = posts
 
 const description =
   'Writing by Abhishek Nair on product management, fintech, consumer products, payments, engineering, and building with high agency from India.';
+
+const breadcrumbJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    {
+      '@type': 'ListItem',
+      position: 1,
+      name: 'Home',
+      item: 'https://nairabhi.com/',
+    },
+    {
+      '@type': 'ListItem',
+      position: 2,
+      name: 'Blog',
+      item: 'https://nairabhi.com/blog',
+    },
+  ],
+};
 ---
 
-<BaseLayout title="Blog - Product Management and Fintech" description={description} canonicalPath="/blog">
+<BaseLayout title="Blog - Product Management and Fintech" description={description} canonicalPath="/blog" jsonLd={breadcrumbJsonLd}>
   <div slot="header">
     <Header />
   </div>

@@ -13,9 +13,28 @@ const funFactsHtml = `{
 
 const description =
   'About Abhishek Nair, a Lead Product Manager at Zeta based in India and open to global or remote product problems across fintech, payments, platform, growth, UPI/cards, and consumer products at scale.';
+
+const breadcrumbJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    {
+      '@type': 'ListItem',
+      position: 1,
+      name: 'Home',
+      item: 'https://nairabhi.com/',
+    },
+    {
+      '@type': 'ListItem',
+      position: 2,
+      name: 'About',
+      item: 'https://nairabhi.com/about',
+    },
+  ],
+};
 ---
 
-<BaseLayout title="About Abhishek Nair - Lead Product Manager" description={description} canonicalPath="/about">
+<BaseLayout title="Abhishek Nair Product Manager - About" description={description} canonicalPath="/about" jsonLd={breadcrumbJsonLd}>
   <div slot="header">
     <Header />
   </div>
@@ -24,11 +43,12 @@ const description =
     <TerminalPrompt command="cat about.md" />
 
     <section class="profile-heading">
-      <h1>Lead Product Manager building fintech and consumer payment products</h1>
+      <h1>Abhishek Nair, Product Manager in Fintech and Payments</h1>
       <p>
-        I operate at the intersection of product strategy, systems thinking,
-        and shipping discipline: credit cards, UPI, payments infrastructure,
-        consumer journeys, and high-agency execution.
+        I am a Lead Product Manager at Zeta with experience across fintech,
+        payments, growth, platform products, and consumer financial journeys.
+        Recruiters and collaborators can use this page as a concise view of my
+        product background, engineering roots, education, and public proof links.
       </p>
     </section>
 
