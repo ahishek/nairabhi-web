@@ -153,6 +153,23 @@ const navLinks = [
     flex-wrap: wrap;
   }
 
+  .machine-nav-list.agent-only {
+    display: none;
+  }
+
+  :global(.agent-mode) .nav-list.human-only,
+  :global(.agent-mode) .prompt-section.human-only {
+    display: none;
+  }
+
+  :global(.agent-mode) .machine-nav-list.agent-only {
+    display: flex;
+  }
+
+  :global(.agent-mode) .machine-heading.agent-only {
+    display: block;
+  }
+
   .machine-nav-link {
     color: var(--agent-link, var(--text-primary));
     text-decoration: underline;

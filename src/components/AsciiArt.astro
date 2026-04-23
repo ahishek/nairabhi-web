@@ -1,15 +1,18 @@
 ---
 ---
 
-<div class="ascii-art-container">
+<div class="name-mark-container">
   <div class="human-only">
-    <div class="ascii-scroll-wrap">
-      <pre class="ascii-art">█████╗ ██████╗ ██╗  ██╗██╗███████╗██╗  ██╗███████╗██╗  ██╗  ███╗   ██╗ █████╗ ██╗██████╗
-██╔══██╗██╔══██╗██║  ██║██║██╔════╝██║  ██║██╔════╝██║ ██╔╝  ████╗  ██║██╔══██╗██║██╔══██╗
-███████║██████╔╝███████║██║███████╗███████║█████╗  █████╔╝   ██╔██╗ ██║███████║██║██████╔╝
-██╔══██║██╔══██╗██╔══██║██║╚════██║██╔══██║██╔══╝  ██╔═██╗   ██║╚██╗██║██╔══██║██║██╔══██╗
-██║  ██║██████╔╝██║  ██║██║███████║██║  ██║███████╗██║  ██╗  ██║ ╚████║██║  ██║██║██║  ██║
-╚═╝  ╚═╝╚═════╝ ╚═╝  ╚═╝╚═╝╚══════╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝  ╚═╝  ╚═══╝╚═╝  ╚═╝╚═╝╚═╝  ╚═╝</pre>
+    <div class="name-mark" data-name-mark>
+      <canvas
+        class="name-mark-canvas"
+        data-name-canvas
+        aria-hidden="true"
+      ></canvas>
+      <div class="name-mark-fallback" aria-hidden="true">
+        <span class="name-mark-full">Abhishek Nair</span>
+        <span class="name-mark-short">Nair</span>
+      </div>
     </div>
 
     <div class="tagline">
@@ -23,21 +26,259 @@
   </div>
 </div>
 
+<script>
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
+
+  const createTextDots = (width, height, options) => {
+    const sampleScale = 2;
+    const offscreen = document.createElement('canvas');
+    offscreen.width = Math.max(1, Math.round(width * sampleScale));
+    offscreen.height = Math.max(1, Math.round(height * sampleScale));
+
+    const ctx = offscreen.getContext('2d', { willReadFrequently: true });
+    if (!ctx) return null;
+
+    const sampleWidth = offscreen.width;
+    const sampleHeight = offscreen.height;
+    const text = options.text;
+    const fontSize = clamp(width * options.fontScale, options.minFontSize, options.maxFontSize) * sampleScale;
+    const tracking = clamp(width * options.trackingScale, options.minTracking, options.maxTracking) * sampleScale;
+    const fontFamily = '"JetBrains Mono", "Courier New", monospace';
+
+    ctx.clearRect(0, 0, sampleWidth, sampleHeight);
+    ctx.fillStyle = '#fff';
+    ctx.font = `700 ${fontSize}px ${fontFamily}`;
+    ctx.textBaseline = 'middle';
+
+    const letterWidths = Array.from(text).map((letter) => ctx.measureText(letter).width);
+    const totalWidth = letterWidths.reduce((sum, letterWidth) => sum + letterWidth, 0) + tracking * (text.length - 1);
+    let cursorX = (sampleWidth - totalWidth) / 2;
+    const centerY = sampleHeight * 0.48;
+
+    Array.from(text).forEach((letter, index) => {
+      ctx.fillText(letter, cursorX, centerY);
+      cursorX += letterWidths[index] + tracking;
+    });
+
+    const image = ctx.getImageData(0, 0, sampleWidth, sampleHeight).data;
+    const gap = options.isCompact ? 5 : 5;
+    const points = [];
+
+    for (let y = 0; y < sampleHeight; y += gap * sampleScale) {
+      for (let x = 0; x < sampleWidth; x += gap * sampleScale) {
+        const alpha = image[(y * sampleWidth + x) * 4 + 3];
+        if (alpha < 48) continue;
+
+        const normalizedX = x / sampleScale;
+        const normalizedY = y / sampleScale;
+        const verticalBias = Math.abs(normalizedY - height * 0.48) / (height * 0.35);
+
+        points.push({
+          ox: normalizedX,
+          oy: normalizedY,
+          x: normalizedX,
+          y: normalizedY,
+          dx: 0,
+          dy: 0,
+          size: (options.isCompact ? 2.45 : 2.85) + Math.max(0, 1 - verticalBias) * 0.55,
+          alpha: 0.48 + alpha / 255 * 0.46,
+          tint: normalizedX / width,
+        });
+      }
+    }
+
+    return points;
+  };
+
+  const mountNameMark = (root) => {
+    const canvas = root.querySelector('[data-name-canvas]');
+    const fallback = root.querySelector('.name-mark-fallback');
+    if (!(canvas instanceof HTMLCanvasElement) || !(fallback instanceof HTMLElement)) return;
+
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    let width = 0;
+    let height = 0;
+    let dots = [];
+    let frame = 0;
+    let active = false;
+    let pointer = { x: -9999, y: -9999, active: false };
+    let waves = [];
+    let reducedMotion = prefersReducedMotion.matches;
+
+    const draw = () => {
+      ctx.clearRect(0, 0, width, height);
+
+      for (const dot of dots) {
+        const green = Math.round(200 + dot.tint * 55);
+        const amberBlend = Math.max(0, dot.tint - 0.72) * 1.8;
+        const red = Math.round(0 + amberBlend * 255);
+        const color = `rgba(${red}, ${green}, ${Math.round(65 - amberBlend * 15)}, ${dot.alpha})`;
+        ctx.fillStyle = color;
+        ctx.fillRect(dot.x - dot.size / 2, dot.y - dot.size / 2, dot.size, dot.size);
+      }
+    };
+
+    const tick = (time) => {
+      active = false;
+      waves = waves.filter((wave) => time - wave.start < 780);
+
+      if (!reducedMotion) {
+        for (const dot of dots) {
+          let targetX = 0;
+          let targetY = 0;
+
+          if (pointer.active) {
+            const fromPointerX = dot.ox + dot.dx - pointer.x;
+            const fromPointerY = dot.oy + dot.dy - pointer.y;
+            const distanceSq = fromPointerX * fromPointerX + fromPointerY * fromPointerY;
+
+            if (distanceSq > 0.01 && distanceSq < 112 * 112) {
+              const distance = Math.sqrt(distanceSq);
+              const force = Math.pow(1 - distance / 112, 2.4) * 42;
+              targetX += fromPointerX / distance * force;
+              targetY += fromPointerY / distance * force;
+            }
+          }
+
+          for (const wave of waves) {
+            const elapsed = time - wave.start;
+            const radius = elapsed * 0.32;
+            const fade = 1 - elapsed / 780;
+            const waveX = dot.ox - wave.x;
+            const waveY = dot.oy - wave.y;
+            const distance = Math.sqrt(waveX * waveX + waveY * waveY);
+            const band = Math.abs(distance - radius);
+
+            if (distance > 0.01 && band < 42) {
+              const force = Math.pow(1 - band / 42, 2) * fade * 28;
+              targetX += waveX / distance * force;
+              targetY += waveY / distance * force;
+            }
+          }
+
+          dot.dx += (targetX - dot.dx) * 0.13;
+          dot.dy += (targetY - dot.dy) * 0.13;
+
+          if (Math.abs(dot.dx) < 0.012) dot.dx = 0;
+          if (Math.abs(dot.dy) < 0.012) dot.dy = 0;
+
+          dot.x = dot.ox + dot.dx;
+          dot.y = dot.oy + dot.dy;
+
+          if (dot.dx !== 0 || dot.dy !== 0) active = true;
+        }
+      }
+
+      draw();
+      canvas.dataset.ready = 'true';
+
+      if (pointer.active || waves.length > 0 || active) {
+        frame = requestAnimationFrame(tick);
+      } else {
+        frame = 0;
+      }
+    };
+
+    const requestTick = () => {
+      if (!frame) frame = requestAnimationFrame(tick);
+    };
+
+    const resize = () => {
+      const rect = root.getBoundingClientRect();
+      width = Math.max(1, Math.round(rect.width));
+      height = Math.max(1, Math.round(rect.height));
+
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width = Math.round(width * dpr);
+      canvas.height = Math.round(height * dpr);
+      canvas.style.width = `${width}px`;
+      canvas.style.height = `${height}px`;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      const isCompact = width < 520;
+      dots = createTextDots(width, height, {
+        text: isCompact ? 'Nair' : 'Abhishek Nair',
+        isCompact,
+        fontScale: isCompact ? 0.285 : 0.145,
+        minFontSize: isCompact ? 48 : 38,
+        maxFontSize: isCompact ? 86 : 82,
+        trackingScale: isCompact ? 0.012 : 0.008,
+        minTracking: isCompact ? 3 : 2.5,
+        maxTracking: isCompact ? 7 : 7,
+      }) || [];
+      fallback.dataset.enhanced = 'true';
+      requestTick();
+    };
+
+    const pointFromEvent = (event) => {
+      const rect = canvas.getBoundingClientRect();
+      return {
+        x: event.clientX - rect.left,
+        y: event.clientY - rect.top,
+      };
+    };
+
+    const handlePointerMove = (event) => {
+      if (event.pointerType !== 'mouse' || reducedMotion) return;
+      pointer = { ...pointFromEvent(event), active: true };
+      requestTick();
+    };
+
+    const handlePointerLeave = () => {
+      pointer.active = false;
+      requestTick();
+    };
+
+    const handlePointerUp = (event) => {
+      if (reducedMotion) return;
+      waves.push({ ...pointFromEvent(event), start: performance.now() });
+      requestTick();
+    };
+
+    const handleMotionChange = (event) => {
+      reducedMotion = event.matches;
+      pointer.active = false;
+      waves = [];
+      requestTick();
+    };
+
+    const observer = new ResizeObserver(resize);
+    observer.observe(root);
+    prefersReducedMotion.addEventListener('change', handleMotionChange);
+    canvas.addEventListener('pointermove', handlePointerMove);
+    canvas.addEventListener('pointerleave', handlePointerLeave);
+    canvas.addEventListener('pointerup', handlePointerUp);
+    resize();
+
+    return () => {
+      if (frame) cancelAnimationFrame(frame);
+      observer.disconnect();
+      prefersReducedMotion.removeEventListener('change', handleMotionChange);
+      canvas.removeEventListener('pointermove', handlePointerMove);
+      canvas.removeEventListener('pointerleave', handlePointerLeave);
+      canvas.removeEventListener('pointerup', handlePointerUp);
+    };
+  };
+
+  const cleanups = Array.from(document.querySelectorAll('[data-name-mark]')).map(mountNameMark);
+
+  document.addEventListener('astro:before-swap', () => {
+    cleanups.forEach((cleanup) => cleanup?.());
+  });
+</script>
 
 <style scoped>
-  .ascii-art-container {
+  .name-mark-container {
     width: 100%;
-    padding: 2rem 1rem;
+    padding: 2.25rem 0 1.25rem;
   }
 
   .human-only {
     display: block;
-  }
-
-  .ascii-scroll-wrap {
-    width: 100%;
-    text-align: center;
-    overflow-x: hidden;
   }
 
   .agent-only {
@@ -52,24 +293,70 @@
     display: block;
   }
 
-  .ascii-art {
+  .name-mark {
+    position: relative;
+    width: min(100%, 800px);
+    height: clamp(150px, 26vw, 230px);
+    margin: 0 auto;
+    cursor: crosshair;
+    touch-action: manipulation;
+    isolation: isolate;
+  }
+
+  .name-mark::before {
+    content: '';
+    position: absolute;
+    inset: 12% 2% 18%;
+    background:
+      linear-gradient(90deg, transparent, rgba(0, 255, 65, 0.09), rgba(255, 176, 0, 0.08), transparent);
+    filter: blur(16px);
+    opacity: 0.9;
+    pointer-events: none;
+  }
+
+  .name-mark-canvas {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 0.55s ease-out;
+    transition-delay: 0.08s;
+    will-change: opacity;
+  }
+
+  .name-mark-canvas[data-ready='true'] {
+    opacity: 1;
+  }
+
+  .name-mark-fallback {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
     color: var(--text-green);
     font-family: var(--font-mono);
-    font-size: clamp(0.46rem, 0.86vw, 0.72rem);
-    line-height: 1.2;
-    margin: 0;
-    padding: 1rem 0;
-    text-align: left;
-    white-space: pre;
-    display: inline-block;
-    max-width: none;
-    text-shadow: 0 0 10px rgba(0, 255, 65, 0.3), 0 0 20px rgba(0, 255, 65, 0.1);
-    letter-spacing: 0;
+    font-size: clamp(2.6rem, 11vw, 5.25rem);
+    font-weight: 700;
+    line-height: 0.95;
+    text-align: center;
+    text-shadow: 0 0 10px rgba(0, 255, 65, 0.35), 0 0 22px rgba(0, 255, 65, 0.14);
+    transition: opacity 0.25s ease;
+    pointer-events: none;
+  }
+
+  .name-mark-fallback[data-enhanced='true'] {
+    opacity: 0;
+  }
+
+  .name-mark-short {
+    display: none;
   }
 
   .tagline {
     text-align: center;
-    margin-top: 1.5rem;
+    margin-top: 0.75rem;
     font-family: var(--font-mono);
     font-size: 1rem;
     color: var(--text-green);
@@ -113,25 +400,28 @@
     margin-top: 0.5rem;
   }
 
-  /* Desktop: no scroll; Mobile: horizontal scroll allowed. */
+  @media (prefers-reduced-motion: reduce) {
+    .name-mark-canvas {
+      transition: none;
+    }
+
+    .cursor {
+      animation: none;
+    }
+  }
+
   @media (max-width: 768px) {
-    .ascii-art-container {
-      padding: 1.5rem 0.5rem;
+    .name-mark-container {
+      padding: 1.5rem 0 1rem;
     }
 
-    .ascii-scroll-wrap {
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-    }
-
-    .ascii-art {
-      font-size: clamp(0.44rem, 1.3vw, 0.66rem);
-      padding: 0.5rem 0;
+    .name-mark {
+      height: clamp(120px, 32vw, 165px);
     }
 
     .tagline {
       font-size: 0.9rem;
-      margin-top: 1rem;
+      margin-top: 0.5rem;
     }
 
     .agent-title {
@@ -143,16 +433,28 @@
     }
   }
 
-  @media (max-width: 480px) {
-    .ascii-art {
-      font-size: clamp(0.38rem, 1.8vw, 0.56rem);
-      padding: 0.25rem 0;
-      line-height: 1;
+  @media (max-width: 520px) {
+    .name-mark {
+      height: 132px;
     }
 
+    .name-mark-full {
+      display: none;
+    }
+
+    .name-mark-short {
+      display: inline;
+    }
+
+    .name-mark-fallback {
+      font-size: clamp(4rem, 22vw, 5.4rem);
+    }
+  }
+
+  @media (max-width: 480px) {
     .tagline {
       font-size: 0.75rem;
-      margin-top: 0.75rem;
+      margin-top: 0.35rem;
     }
 
     .agent-title {
